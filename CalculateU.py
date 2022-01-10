@@ -1,6 +1,6 @@
 import linecache
-from pymatgen.core import Structure
-from prettytable import PrettyTable
+# from pymatgen.core import Structure
+# from prettytable import PrettyTable
 
 
 def filetest(path, strval):
