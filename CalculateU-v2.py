@@ -1,9 +1,9 @@
 import linecache
 import pandas as pd
+from prettytable import PrettyTable
 
 
 # from pymatgen.core import Structure
-# from prettytable import PrettyTable
 
 # function getting the index of the first line for total charge
 def get_total_charge_first_line(str_path, str_keyword):
@@ -87,16 +87,31 @@ def main():
     flt_charge_nsf = pd.read_csv('NSF_total_charge.csv')
     flt_charge_sf = pd.read_csv('SF_total_charge.csv')
     # Calculate La
+    u_la_d = []
+    u_la_f = []
     for idx in range(dic_element['N'], dic_element['La']):
         # d orbital
         flt_delta_nsf = flt_charge_nsf.iloc[idx]["d"] - flt_charge_groundstate.iloc[idx]["d"]
         flt_delta_sf = flt_charge_sf.iloc[idx]["d"] - flt_charge_groundstate.iloc[idx]["d"]
-        u_la_d = 1/flt_delta_sf - 1/flt_delta_nsf
+        u_la_d.append(1 / flt_delta_sf - 1 / flt_delta_nsf)
         # f orbital
         flt_delta_nsf = flt_charge_nsf.iloc[idx]["f"] - flt_charge_groundstate.iloc[idx]["f"]
         flt_delta_sf = flt_charge_sf.iloc[idx]["f"] - flt_charge_groundstate.iloc[idx]["f"]
-        u_la_f = 1 / flt_delta_sf - 1 / flt_delta_nsf
+        u_la_f.append(1 / flt_delta_sf - 1 / flt_delta_nsf)
+    dic_u_la = {'d': u_la_d, 'f': u_la_f}
+    output = pd.DataFrame(dic_u_la)
+    print(output)
     # Calculate Ti
+    u_ti_d = []
+    u_ti_f = []
+    for idx in range(dic_element['La'], dic_element['Ti']):
+        # d orbital
+        flt_delta_nsf = flt_charge_nsf.iloc[idx]["d"] - flt_charge_groundstate.iloc[idx]["d"]
+        flt_delta_sf = flt_charge_sf.iloc[idx]["d"] - flt_charge_groundstate.iloc[idx]["d"]
+        u_ti_d.append(1 / flt_delta_sf - 1 / flt_delta_nsf)
+    dic_u_ti = {'d': u_ti_d}
+    output = pd.DataFrame(dic_u_ti)
+    print(output)
 
 
 if __name__ == '__main__':
