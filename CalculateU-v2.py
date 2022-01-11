@@ -3,8 +3,6 @@ import pandas as pd
 from prettytable import PrettyTable
 
 
-# from pymatgen.core import Structure
-
 # function getting the index of the first line for total charge
 def get_total_charge_first_line(str_path, str_keyword):
     str_path_outcar = str_path + "OUTCAR"
@@ -103,7 +101,6 @@ def main():
     print(output)
     # Calculate Ti
     u_ti_d = []
-    u_ti_f = []
     for idx in range(dic_element['La'], dic_element['Ti']):
         # d orbital
         flt_delta_nsf = flt_charge_nsf.iloc[idx]["d"] - flt_charge_groundstate.iloc[idx]["d"]
