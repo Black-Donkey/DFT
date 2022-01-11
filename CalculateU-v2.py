@@ -3,7 +3,7 @@ import pandas as pd
 from prettytable import PrettyTable
 
 
-# function getting the index of the first line for total charge
+# function getting the line index of the total charge string existing last time
 def get_total_charge_first_line(str_path, str_keyword):
     str_path_outcar = str_path + "OUTCAR"
     int_total_lines = sum(1 for _ in open(str_path_outcar))
@@ -14,7 +14,7 @@ def get_total_charge_first_line(str_path, str_keyword):
             int_line_idx = int_line_idx + 1
             if str_keyword in line.strip():
                 int_first_line = int_total_lines - int_line_idx + 1 + 4
-                msg = "'%s' string in line %d" % (str_keyword, int_first_line)
+                msg = "'%s' last string found in line %d" % (str_keyword, int_first_line)
                 break
     print(msg)
     return int_first_line
