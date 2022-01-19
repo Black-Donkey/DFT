@@ -28,7 +28,7 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
 
 def main():
     # Variables
-    str_path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\"
+    str_path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF0-5-2\\STEP2\\RUN2\\"
     str_keyword = "F="
     str_csv_file_name = "FE0dEdata.csv"
     # Save the total free energy into csv
