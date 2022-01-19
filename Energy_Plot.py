@@ -1,5 +1,6 @@
 import linecache
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # function getting the line index of the total charge string existing last time
@@ -15,7 +16,7 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
             int_line_idx = int_line_idx + 1
             if str_keyword in line.strip():
                 int_energy_line_idx = int_energy_line_idx + 1
-                msg = "'%s' last string found in ionic step %d" % (str_keyword, int_energy_line_idx)
+                msg = "'%s' string found in ionic step %d" % (str_keyword, int_energy_line_idx)
                 print(msg)
                 lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
                 lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
@@ -27,13 +28,19 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
 
 def main():
     # Variables
-    str_path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\"
+    str_path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF0-5-2\\STEP2\\"
     str_keyword = "F="
     str_csv_file_name = "FE0dEdata.csv"
     # Save the total free energy into csv
     save_energy(str_path, str_keyword, str_csv_file_name)
     # Load the total free energy and plot
-    flt_charge_groundstate = pd.read_csv('groundstate_total_charge.csv')
+    lst_f = pd.read_csv(str_csv_file_name, usecols=["f"])
+    int_ionic_steps = len(lst_f)
+    plt.plot(range(0, int_ionic_steps), lst_f)
+    plt.xlabel('ionic steps')
+    plt.ylabel('total free energy (eV)')
+    plt.show()
+
 
 if __name__ == '__main__':
     main()
