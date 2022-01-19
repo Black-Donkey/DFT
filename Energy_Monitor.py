@@ -15,32 +15,41 @@ class Application(Frame):
 
     def creat_widget(self):
         # Label
-        self.label01 = Label(self, text="Please enter directory", width=100, height=2, bg="black", fg="white",
-                             font=("Arial", 15))
-        self.label01.pack()
+        self.label01 = Label(self, text="Energy Monitor for Geometry Optimization", width=80, height=2, bg="black",
+                             fg="white", font=("Arial", 15))
+        self.label01.grid(row=0, column=0, columnspan=2)
 
         # Entry
         v1 = StringVar()
-        self.entry01 = Entry(self, textvariable=v1)
-        self.entry01.pack()
-        v1.set("please enter directory")
-        print(self.entry01.get())
+        self.entry01 = Entry(self, width=100, font=("Arial", 11), textvariable=v1)
+        self.entry01.grid(row=1, column=0)
+        v1.set("S:\\projects")
 
         # Button
-        self.btn01 = Button(self, font=("Arial", 10), text="ok", width=6, height=3, command=self.generate_canvas)
-        self.btn01.pack()
+        self.btn01 = Button(self, font=("Arial", 11), text="ok", width=6, height=1, command=self.generate_canvas())
+        self.btn01.grid(row=1, column=1)
 
         # Canvas
-        self.canvas = Canvas(self, width=300, height=200, bg="green")
-        self.canvas.pack()
+        self.canvas = Canvas(self, width=888, height=280, bg="green")
+        self.canvas.grid(row=2, column=0, columnspan=2)
         # btn01.bind("<Button-1>", get_energy)
 
     def generate_canvas(self):
+        path = self.entry01.get()
         print("get" + self.entry01.get())
-
-
-def get_energy(self):
-    self.canvas = Canvas(self, width=300, height=200, bg="green")
+        int_total_lines = sum(1 for _ in open(path))
+        int_line_idx = 0
+        str_keyword = "Energy"
+        msg = "[Error]: There is no result"
+        with open(path, 'r') as file:
+            for line in reversed(file.readlines()):
+                int_line_idx = int_line_idx + 1
+                if str_keyword in line.strip():
+                    int_first_line = int_total_lines - int_line_idx + 1 + 4
+                    msg = "'%s' last string found in line %d" % (str_keyword, int_first_line)
+                    break
+        print(msg)
+        return int_first_line
 
 
 def main():
