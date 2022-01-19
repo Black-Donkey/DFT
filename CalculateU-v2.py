@@ -1,6 +1,6 @@
 import linecache
 import pandas as pd
-from prettytable import PrettyTable
+# from prettytable import PrettyTable
 
 
 # function getting the index of the first line for total charge
