@@ -23,7 +23,7 @@ class Application(Frame):
         v1 = StringVar()
         self.entry01 = Entry(self, width=100, font=("Arial", 11), textvariable=v1)
         self.entry01.grid(row=1, column=0)
-        v1.set("S:\\projects")
+        v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\vaspout")
 
         # Button
         self.btn01 = Button(self, font=("Arial", 11), text="ok", width=6, height=1, command=self.generate_canvas())
@@ -49,7 +49,6 @@ class Application(Frame):
                     msg = "'%s' last string found in line %d" % (str_keyword, int_first_line)
                     break
         print(msg)
-        return int_first_line
 
 
 def main():
