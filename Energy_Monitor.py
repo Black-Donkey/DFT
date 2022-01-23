@@ -2,6 +2,7 @@ from tkinter import *
 import linecache
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from PIL import ImageTk, Image
 import os
 
@@ -58,8 +59,8 @@ class Application(Frame):
         self.btn01.grid(row=1, column=1)
 
         # Canvas
-        self.canvas = Canvas(self, width=888, height=378, bg="green")
-        self.canvas.grid(row=2, column=0, columnspan=2)
+        # self.canvas = Canvas(self, width=888, height=378, bg="green")
+        # self.canvas.grid(row=2, column=0, columnspan=2)
 
     def generate_canvas(self):
         str_path = self.entry01.get()
@@ -72,22 +73,32 @@ class Application(Frame):
         # Load the total free energy and plot
         lst_f = pd.read_csv(str_csv_file_name, usecols=["f"])
         int_ionic_steps = len(lst_f)
-        plt.figure(figsize=(6, 3.8))
-        plt.plot(range(0, int_ionic_steps), lst_f)
+        # plt.figure(figsize=(6, 3.8))
+        # plt.plot(range(0, int_ionic_steps), lst_f)
+        # os.remove(str_jpg_file_name)
+        # plt.savefig(str_jpg_file_name)
+        # fig = Image.open(str_jpg_file_name)
+        # self.canvas.image = ImageTk.PhotoImage(fig)
+        # self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
+
+        fig = plt.figure(figsize=(6, 3.8))
+        fig.add_subplot().plot(range(0, int_ionic_steps), lst_f)
         plt.xlabel('ionic steps')
         plt.ylabel('total free energy (eV)')
-
-        os.remove(str_jpg_file_name)
-        plt.savefig(str_jpg_file_name)
-        fig = Image.open(str_jpg_file_name)
-        self.canvas.image = ImageTk.PhotoImage(fig)
-        self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
+        # self.canvas = Canvas(self, width=888, height=378, bg="green")
+        # self.canvas.grid(row=2, column=0, columnspan=2)
+        self.canvas = FigureCanvasTkAgg(fig, self.master)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack()
+        toolbar = NavigationToolbar2Tk(self.canvas, self.master)
+        toolbar.update()
+        self.canvas.get_tk_widget().pack()
 
 
 def main():
     root = Tk()
     root.title("ENERGY MONITOR")
-    root.geometry("1000x500+300+300")
+    root.geometry("900x500+300+200")
     Application(master=root)
     root.mainloop()
 
