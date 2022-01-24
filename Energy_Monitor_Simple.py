@@ -49,7 +49,7 @@ def generate_canvas(self):
     canvas.draw()
     canvas.get_tk_widget().place(x=20, y=95)
     toolbar = NavigationToolbar2Tk(canvas, self.master)
-    toolbar.place(x=20, y=475)
+    toolbar.place(x=18, y=475)
 
 
 def check_this(self):
@@ -88,7 +88,7 @@ def main():
     canvas.draw()
     canvas.get_tk_widget().place(x=20, y=95)
     toolbar = NavigationToolbar2Tk(canvas, root)
-    toolbar.place(x=20, y=475)
+    toolbar.place(x=18, y=475)
 
     # Button Plot
     root.btn01 = Button(root, font=("Arial", 11), text="Plot", command=lambda: generate_canvas(root))
