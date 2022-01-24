@@ -57,10 +57,6 @@ class Application(Frame):
         self.btn01 = Button(self, font=("Arial", 11), text="ok", width=6, height=1, command=self.generate_canvas)
         self.btn01.grid(row=1, column=1)
 
-        # Canvas
-        # self.canvas = Canvas(self, width=888, height=378, bg="green")
-        # self.canvas.grid(row=2, column=0, columnspan=2)
-
     def generate_canvas(self):
         str_path = self.entry01.get()
         print("get" + self.entry01.get())
@@ -71,16 +67,17 @@ class Application(Frame):
         # Load the total free energy and plot
         lst_f = pd.read_csv(str_csv_file_name, usecols=["f"])
         int_ionic_steps = len(lst_f)
+
         fig = plt.figure(figsize=(6, 3.8))
         fig.add_subplot().plot(range(1, int_ionic_steps + 1), lst_f)
-
         plt.xlabel('ionic steps')
         plt.ylabel('total free energy (eV)')
+        plt.subplots_adjust(left=0.15, right=0.9, top=0.9, bottom=0.15)
         self.canvas = FigureCanvasTkAgg(fig, self.master)
         self.canvas.draw()
-        self.canvas.get_tk_widget().pack()
+        self.canvas.get_tk_widget().place(x=20, y=80)
         self.toolbar = NavigationToolbar2Tk(self.canvas, self.master)
-        self.toolbar.update()
+        self.toolbar.place(x=20, y=460)
 
 
 def main():
