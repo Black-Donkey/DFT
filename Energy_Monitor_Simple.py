@@ -45,19 +45,23 @@ def generate_canvas(self):
     plt.xlabel('ionic steps')
     plt.ylabel('total free energy (eV)')
     plt.subplots_adjust(left=0.15, right=0.9, top=0.9, bottom=0.15)
-    self.canvas = FigureCanvasTkAgg(fig, self.master)
-    self.canvas.draw()
-    self.canvas.get_tk_widget().place(x=20, y=95)
-    self.toolbar = NavigationToolbar2Tk(self.canvas, self.master)
-    self.toolbar.place(x=20, y=475)
+    canvas = FigureCanvasTkAgg(fig, self.master)
+    canvas.draw()
+    canvas.get_tk_widget().place(x=20, y=95)
+    toolbar = NavigationToolbar2Tk(canvas, self.master)
+    toolbar.place(x=20, y=475)
 
 
 def check_this(self):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect('baigroup.duckdns.org', username='jiachengwang', password='wjc19950910')
-    str_path = self.entry01.get()
-    client.exec_command('cd ' + str_path + ';shotgun check-this -s')
+    client.connect(hostname='baigroup.duckdns.org', username='', password='')
+    str_wsl_path = self.entry01.get().replace('S:', '~').replace('\\STEP2\\', '').replace('\\', '/')
+    str_command = 'cd ' + str_wsl_path + ';shotgun check-this -s'
+    print(str_command)
+    stdin, stdout, stderr = client.exec_command(str_command)
+    print(stdout.read().decode('utf-8'))
+    client.close()
 
 
 def main():
@@ -74,6 +78,17 @@ def main():
     root.entry01 = Entry(root, font=("Arial", 11), textvariable=v1)
     root.entry01.place(x=20, y=60, width=700, height=30)
     v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\")
+
+    # Canvas and Toolbar
+    fig = plt.figure(figsize=(6, 3.8))
+    plt.xlabel('ionic steps')
+    plt.ylabel('total free energy (eV)')
+    plt.subplots_adjust(left=0.15, right=0.9, top=0.9, bottom=0.15)
+    canvas = FigureCanvasTkAgg(fig, root)
+    canvas.draw()
+    canvas.get_tk_widget().place(x=20, y=95)
+    toolbar = NavigationToolbar2Tk(canvas, root)
+    toolbar.place(x=20, y=475)
 
     # Button Plot
     root.btn01 = Button(root, font=("Arial", 11), text="Plot", command=lambda: generate_canvas(root))
