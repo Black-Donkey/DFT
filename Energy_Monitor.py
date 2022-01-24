@@ -54,7 +54,7 @@ class Application(Frame):
         v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\")
 
         # Button
-        self.btn01 = Button(self, font=("Arial", 11), text="ok", width=6, height=1, command=self.generate_canvas)
+        self.btn01 = Button(self, font=("Arial", 11), text="Plot", width=6, height=1, command=self.generate_canvas)
         self.btn01.grid(row=1, column=1)
 
     def generate_canvas(self):
