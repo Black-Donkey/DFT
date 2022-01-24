@@ -46,15 +46,15 @@ def generate_canvas(self):
     plt.subplots_adjust(left=0.15, right=0.9, top=0.9, bottom=0.15)
     self.canvas = FigureCanvasTkAgg(fig, self.master)
     self.canvas.draw()
-    self.canvas.get_tk_widget().place(x=20, y=80)
+    self.canvas.get_tk_widget().place(x=20, y=95)
     self.toolbar = NavigationToolbar2Tk(self.canvas, self.master)
-    self.toolbar.place(x=20, y=460)
+    self.toolbar.place(x=20, y=475)
 
 
 def main():
     root = Tk()
     root.title("ENERGY MONITOR")
-    root.geometry("900x500+300+200")
+    root.geometry("900x520+300+200")
     # Label
     root.label01 = Label(root, text="Energy Monitor for Geometry Optimization", width=78, height=2, bg="black",
                          fg="white", font=("Arial", 15))
@@ -62,13 +62,13 @@ def main():
 
     # Entry
     v1 = StringVar()
-    root.entry01 = Entry(root, width=90, font=("Arial", 11), textvariable=v1)
-    root.entry01.place(x=20, y=60)
+    root.entry01 = Entry(root, font=("Arial", 11), textvariable=v1)
+    root.entry01.place(x=20, y=60, width=700, height=30)
     v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\")
 
     # Button
-    root.btn01 = Button(root, font=("Arial", 11), text="Plot", width=6, height=1, command=lambda: generate_canvas(root))
-    root.btn01.place(x=120, y=60)
+    root.btn01 = Button(root, font=("Arial", 11), text="Plot", command=lambda: generate_canvas(root))
+    root.btn01.place(x=820, y=60, width=65, height=30)
     root.mainloop()
 
 
