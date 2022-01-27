@@ -1,24 +1,28 @@
-from pymatgen.core import Structure
-from prettytable import PrettyTable
+import matplotlib.pyplot as plt
+from pymatgen.io.vasp.outputs import Vasprun, BSVasprun
+from pymatgen.electronic_structure.plotter import BSDOSPlotter, \
+    BSPlotter, BSPlotterProjected, DosPlotter
 
 
 def main():
-    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF0-1\\STEP2\\"
-    s1 = Structure.from_file("LLTO-2N-5-OV-1.cif")
-    s2 = Structure.from_file(path + "LLTO-2N-5-OV-1-ISIF0-CONTCAR")
-    s3 = Structure.from_file("LLTO-2N-5-OV-1-ISIF3-CONTCAR")
+    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2-DOS\\"
 
-    pt = PrettyTable()
-    pt.field_names = ["Index", "Formula", "N+ Fraction", "Volume", "Lattice Angles", "Lattice Number"]
-    pt.add_row(["LLTO-2N-5-OV-1", s1.formula, s1.composition.get_atomic_fraction("N"), s1.volume, s1.lattice.angles,
-                s1.lattice.abc])
-    pt.add_row(
-        ["LLTO-2N-5-OV-1-ISIF0", s2.formula, s2.composition.get_atomic_fraction("N"), s2.volume, s2.lattice.angles,
-         s2.lattice.abc])
-    pt.add_row(
-        ["LLTO-2N-5-OV-1-ISIF3", s3.formula, s3.composition.get_atomic_fraction("N"), s3.volume, s3.lattice.angles,
-         s3.lattice.abc])
-    print(pt)
+    dos_vasprun = Vasprun(path + "vasprun.xml")
+    dos_data = dos_vasprun.complete_dos
+    bs_vasprun = Vasprun(path + "vasprun.xml", parse_projected_eigen=True)
+    bs_data = bs_vasprun.get_band_structure()
+
+    # Total dos calculated at the end of run.
+    tdos = dos_vasprun.tdos
+    plotter = DosPlotter(stack=False, sigma=0.5)
+    plotter.add_dos("Total DOS", tdos)
+    plotter.show()
+
+    v = BSVasprun(path + "vasprun.xml")
+    bs = v.get_band_structure(kpoints_filename="band/KPOINTS", line_mode=True)
+    plt = BSPlotter(bs)
+    plt.get_plot(vbm_cbm_marker=True)
+    plt.show()
 
 
 if __name__ == '__main__':
