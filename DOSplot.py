@@ -14,15 +14,15 @@ def main():
 
     # Total dos calculated at the end of run.
     tdos = dos_vasprun.tdos
-    plotter = DosPlotter(stack=False, sigma=0.5)
-    plotter.add_dos("Total DOS", tdos)
-    plotter.show()
+    plot1 = DosPlotter(stack=False, sigma=0.5)
+    plot1.add_dos("Total DOS", tdos)
+    plot1.show()
 
-    v = BSVasprun(path + "vasprun.xml")
-    bs = v.get_band_structure(kpoints_filename="band/KPOINTS", line_mode=True)
-    plt = BSPlotter(bs)
-    plt.get_plot(vbm_cbm_marker=True)
-    plt.show()
+    # v = BSVasprun(path + "vasprun.xml")
+    # bs = v.get_band_structure(kpoints_filename="band/KPOINTS", line_mode=True)
+    # plot2 = BSPlotter(bs)
+    # plot2.get_plot(vbm_cbm_marker=True)
+    # plot2.show()
 
 
 if __name__ == '__main__':
