@@ -5,7 +5,7 @@ from pymatgen.electronic_structure.plotter import BSDOSPlotter, \
 
 
 def main():
-    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2-DOS\\"
+    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2-2\\STEP2\\"
 
     dos_vasprun = Vasprun(path + "vasprun.xml")
     dos_data = dos_vasprun.complete_dos
@@ -18,12 +18,12 @@ def main():
     plot1.add_dos("Total DOS", tdos)
     plot1.show()
 
-    run = BSVasprun(path + "vasprun.xml", parse_projected_eigen=True)
-    bs = run.get_band_structure("KPOINTS")
-    print("number of bands", bs.nb_bands)
-    print("number of kpoints", len(bs.kpoints))
-    print(bs.is_metal())
-    print(bs.is_spin_polarized)
+    # run = BSVasprun(path + "vasprun.xml", parse_projected_eigen=True)
+    # bs = run.get_band_structure("KPOINTS")
+    # print("number of bands", bs.nb_bands)
+    # print("number of kpoints", len(bs.kpoints))
+    # print(bs.is_metal())
+    # print(bs.is_spin_polarized)
     # bsplot = BSPlotter(bs)
     # # get the plot
     # bsplot.get_plot(ylim=(-20, 10), zero_to_efermi=True)
