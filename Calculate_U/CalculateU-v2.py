@@ -77,11 +77,11 @@ def main():
     str_path_nsf = "S:\\projects\\05_LLTO_2N_Ov_ISIF_3_U\\LLTO-2N-5-OV-NSF\\"
     str_path_sf = "S:\\projects\\05_LLTO_2N_Ov_ISIF_3_U\\LLTO-2N-5-OV-SF\\"
     # Save csv files
-    dic_element = save_total_charge(str_path_groundstate, "groundstate_total_charge.csv")
+    dic_element = save_total_charge(str_path_groundstate, "../groundstate_total_charge.csv")
     save_total_charge(str_path_nsf, "NSCF_total_charge.csv")
     save_total_charge(str_path_sf, "SCF_total_charge.csv")
     # Load csv files
-    flt_charge_groundstate = pd.read_csv('groundstate_total_charge.csv')
+    flt_charge_groundstate = pd.read_csv('../groundstate_total_charge.csv')
     flt_charge_nsf = pd.read_csv('NSCF_total_charge.csv')
     flt_charge_sf = pd.read_csv('SCF_total_charge.csv')
     # Calculate La
