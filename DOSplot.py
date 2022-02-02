@@ -5,7 +5,7 @@ from pymatgen.electronic_structure.plotter import BSDOSPlotter, \
 
 
 def main():
-    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2-2\\STEP2\\"
+    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF0-1\\STEP2\\"
 
     dos_vasprun = Vasprun(path + "vasprun.xml")
     dos_data = dos_vasprun.complete_dos
@@ -40,7 +40,8 @@ def main():
     # ax.plot((), (), "r--", label="spin down")
     # ax.legend(fontsize=16, loc="upper left")
 
-    # ValueError: BSPlotter only works with BandStructureSymmLine objects. A BandStructure object (on a uniform grid for instance and not along symmetry lines won't work)
+    # ValueError: BSPlotter only works with BandStructureSymmLine objects. A BandStructure object (on a uniform grid
+    # for instance and not along symmetry lines won't work)
 
     # v = BSVasprun(path + "vasprun.xml")
     # bs = v.get_band_structure(kpoints_filename="band/KPOINTS", line_mode=True)
