@@ -61,7 +61,7 @@ class Application(Frame):
         str_path = self.entry01.get()
         print("get" + self.entry01.get())
         str_keyword = "F="
-        str_csv_file_name = "FE0dEdata.csv"
+        str_csv_file_name = "../FE0dEdata.csv"
         # Save the total free energy into csv
         save_energy(str_path, str_keyword, str_csv_file_name)
         # Load the total free energy and plot

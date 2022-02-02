@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import paramiko
+import pymol
 
 
 # function getting the line index of the total charge string existing last time
@@ -28,12 +29,17 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
     output = pd.DataFrame(dic_data)
     output.to_csv(str_csv_file_name, index=False, encoding='utf8')
 
+    str_path_outcar = str_path + "OUTCAR"
+
+    pymol.cmd.read_molstr(str_path_outcar, 'a')
+    pymol.cmd.draw()
+
 
 def generate_canvas(self):
     str_path = self.entry01.get()
     print("get" + self.entry01.get())
     str_keyword = "F="
-    str_csv_file_name = "FE0dEdata.csv"
+    str_csv_file_name = "../FE0dEdata.csv"
     # Save the total free energy into csv
     save_energy(str_path, str_keyword, str_csv_file_name)
     # Load the total free energy and plot

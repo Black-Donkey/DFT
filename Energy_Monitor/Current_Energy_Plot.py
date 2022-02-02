@@ -30,7 +30,7 @@ def main():
     # Variables
     str_path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\"
     str_keyword = "F="
-    str_csv_file_name = "FE0dEdata.csv"
+    str_csv_file_name = "../FE0dEdata.csv"
     # Save the total free energy into csv
     save_energy(str_path, str_keyword, str_csv_file_name)
     # Load the total free energy and plot
