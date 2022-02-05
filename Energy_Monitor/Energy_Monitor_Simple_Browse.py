@@ -10,7 +10,7 @@ import paramiko
 
 # function getting the line index of the total charge string existing last time
 def save_energy(str_path, str_keyword, str_csv_file_name):
-    str_path_vaspout = str_path
+    str_path_vaspout = str_path + "\\vaspout"
     int_line_idx = 0
     int_energy_line_idx = 0
     lst_f = []
@@ -32,11 +32,11 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
 
 
 def browse(self):
-    filename = filedialog.askopenfilename()
-    self.pathlabel.config(text=filename)
+    filename = filedialog.askdirectory()
     v1 = StringVar()
     self.entry01 = Entry(self, font=("Arial", 11), textvariable=v1)
-    v1.set(self.pathlabel)
+    self.entry01.place(x=20, y=60, width=600, height=30)
+    v1.set(filename)
 
 
 def generate_canvas(self):
@@ -87,7 +87,7 @@ def main():
     v1 = StringVar()
     root.entry01 = Entry(root, font=("Arial", 11), textvariable=v1)
     root.entry01.place(x=20, y=60, width=600, height=30)
-    v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\vaspout")
+    v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2")
 
     # Canvas and Toolbar
     fig = plt.figure(figsize=(6, 3.8))
