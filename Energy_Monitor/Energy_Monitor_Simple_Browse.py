@@ -10,7 +10,7 @@ import paramiko
 
 # function getting the line index of the total charge string existing last time
 def save_energy(str_path, str_keyword, str_csv_file_name):
-    str_path_vaspout = str_path + "vaspout"
+    str_path_vaspout = str_path
     int_line_idx = 0
     int_energy_line_idx = 0
     lst_f = []
@@ -31,9 +31,12 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
     output.to_csv(str_csv_file_name, index=False, encoding='utf8')
 
 
-def browsefunc(self):
+def browse(self):
     filename = filedialog.askopenfilename()
     self.pathlabel.config(text=filename)
+    v1 = StringVar()
+    self.entry01 = Entry(self, font=("Arial", 11), textvariable=v1)
+    v1.set(self.pathlabel)
 
 
 def generate_canvas(self):
@@ -56,7 +59,7 @@ def generate_canvas(self):
     canvas.draw()
     canvas.get_tk_widget().place(x=20, y=95)
     toolbar = NavigationToolbar2Tk(canvas, self.master)
-    toolbar.place(x=18, y=475)
+    toolbar.place(x=18, y=480)
 
 
 def check_this(self):
@@ -74,7 +77,7 @@ def check_this(self):
 def main():
     root = Tk()
     root.title("ENERGY MONITOR")
-    root.geometry("900x520+300+200")
+    root.geometry("900x522+300+200")
     # Label
     root.label01 = Label(root, text="Energy Monitor for Geometry Optimization", width=78, height=2, bg="black",
                          fg="white", font=("Arial", 15))
@@ -83,8 +86,8 @@ def main():
     # Entry
     v1 = StringVar()
     root.entry01 = Entry(root, font=("Arial", 11), textvariable=v1)
-    root.entry01.place(x=20, y=60, width=700, height=30)
-    v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\")
+    root.entry01.place(x=20, y=60, width=600, height=30)
+    v1.set("S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF3-2\\STEP2\\vaspout")
 
     # Canvas and Toolbar
     fig = plt.figure(figsize=(6, 3.8))
@@ -95,20 +98,20 @@ def main():
     canvas.draw()
     canvas.get_tk_widget().place(x=20, y=95)
     toolbar = NavigationToolbar2Tk(canvas, root)
-    toolbar.place(x=18, y=475)
+    toolbar.place(x=18, y=480)
 
-    root.browsebutton = Button(root, text="Browse", command=lambda: browsefunc(root))
-    root.browsebutton.place(x=820, y=160, width=65, height=30)
-    root.pathlabel = Label(root)
-    root.pathlabel.pack()
-
-    # Button Plot
-    root.btn01 = Button(root, font=("Arial", 11), text="Plot", command=lambda: generate_canvas(root))
-    root.btn01.place(x=820, y=60, width=65, height=30)
+    # Button Browse
+    root.btn01 = Button(root, font=("Arial", 11), text="Browse", command=lambda: browse(root))
+    root.btn01.place(x=630, y=60, width=85, height=30)
+    # root.pathlabel = Label(root)
 
     # Button Check-this
     root.btn02 = Button(root, font=("Arial", 11), text="Check-this", command=lambda: check_this(root))
-    root.btn02.place(x=730, y=60, width=85, height=30)
+    root.btn02.place(x=720, y=60, width=100, height=30)
+
+    # Button Plot
+    root.btn03 = Button(root, font=("Arial", 11), text="Plot", command=lambda: generate_canvas(root))
+    root.btn03.place(x=825, y=60, width=60, height=30)
 
     root.mainloop()
 
