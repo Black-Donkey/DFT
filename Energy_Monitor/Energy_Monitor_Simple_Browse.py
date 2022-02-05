@@ -32,7 +32,7 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
 
 
 def browse(self):
-    filename = filedialog.askdirectory()
+    filename = filedialog.askdirectory().replace('/', '\\')
     v1 = StringVar()
     self.entry01 = Entry(self, font=("Arial", 11), textvariable=v1)
     self.entry01.place(x=20, y=60, width=600, height=30)
