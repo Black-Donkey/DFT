@@ -5,7 +5,7 @@ from pymatgen.electronic_structure.plotter import BSDOSPlotter, \
 
 
 def main():
-    path = "S:\\projects\\04_LLTO_2N_Ov_ISIF_3\\LLTO-2N-5-OV-ISIF0-4\\STEP2\\"
+    path = "S:\\projects\\02_LLTO_1N_ISIF_0\\LLTO-1N-5\\STEP2\\"
 
     dos_vasprun = Vasprun(path + "vasprun.xml")
     dos_data = dos_vasprun.complete_dos
@@ -14,7 +14,7 @@ def main():
 
     # Total dos calculated at the end of run.
     tdos = dos_vasprun.tdos
-    plot1 = DosPlotter(stack=False)
+    plot1 = DosPlotter(stack=False, sigma=0.5)
     plot1.add_dos("Total DOS", tdos)
     plot1.show()
 
