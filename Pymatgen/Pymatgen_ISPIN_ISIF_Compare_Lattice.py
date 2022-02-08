@@ -1,5 +1,6 @@
 from pymatgen.core import Structure
 from prettytable import PrettyTable
+import pandas as pd
 
 
 def main():
@@ -28,6 +29,32 @@ def main():
     s10 = Structure.from_file(path10 + "CONTCAR")
     s11 = Structure.from_file(path11 + "CONTCAR")
     s12 = Structure.from_file(path12 + "CONTCAR")
+
+    lst_index = ["01_LLTO_ISIF0_ISPIN1", "02_LLTO_ISIF0_ISPIN2", "03_LLTO_ISIF3_ISPIN1", "04_LLTO_ISIF3_ISPIN2",
+                 "05_N_LLTO_ISIF0_ISPIN1", "06_N_LLTO_ISIF0_ISPIN2", "07_N_LLTO_ISIF3_ISPIN1", "08_N_LLTO_ISIF3_ISPIN2",
+                 "09_N_LLTO_OV_ISIF0_ISPIN1", "10_N_LLTO_OV_ISIF0_ISPIN2", "11_N_LLTO_OV_ISIF3_ISPIN1",
+                 "12_N_LLTO_OV_ISIF3_ISPIN2"]
+    lst_formula = [s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula,
+                   s1.formula, s1.formula, s1.formula, s1.formula]
+    lst_n_fraction = [s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
+                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
+                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
+                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
+                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
+                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N")]
+    lst_volume = [s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume,
+                  s1.volume, s1.volume, s1.volume]
+    lst_lattice_angles = [s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles,
+                          s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles,
+                          s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles]
+    lst_lattice_number = [s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc,
+                          s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc,
+                          s1.lattice.abc, s1.lattice.abc]
+    lst_total_energy = []
+    dic_data = {"Index": lst_index, "Formula": lst_formula, "N+ Fraction": lst_n_fraction, "Volume": lst_volume,
+                "Lattice Angles": lst_lattice_angles, "Lattice Number": lst_lattice_number}
+    output = pd.DataFrame(dic_data)
+    output.to_csv("data.csv", index=False, encoding='utf8')
 
     pt = PrettyTable()
     pt.field_names = ["Index", "Formula", "N+ Fraction", "Volume", "Lattice Angles", "Lattice Number"]
