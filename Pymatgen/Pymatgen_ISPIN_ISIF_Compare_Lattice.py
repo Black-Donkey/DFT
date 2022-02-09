@@ -34,22 +34,22 @@ def main():
                  "05_N_LLTO_ISIF0_ISPIN1", "06_N_LLTO_ISIF0_ISPIN2", "07_N_LLTO_ISIF3_ISPIN1", "08_N_LLTO_ISIF3_ISPIN2",
                  "09_N_LLTO_OV_ISIF0_ISPIN1", "10_N_LLTO_OV_ISIF0_ISPIN2", "11_N_LLTO_OV_ISIF3_ISPIN1",
                  "12_N_LLTO_OV_ISIF3_ISPIN2"]
-    lst_formula = [s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula, s1.formula,
-                   s1.formula, s1.formula, s1.formula, s1.formula]
-    lst_n_fraction = [s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
-                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
-                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
-                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
-                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N"),
-                      s1.composition.get_atomic_fraction("N"), s1.composition.get_atomic_fraction("N")]
-    lst_volume = [s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume, s1.volume,
-                  s1.volume, s1.volume, s1.volume]
-    lst_lattice_angles = [s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles,
-                          s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles,
-                          s1.lattice.angles, s1.lattice.angles, s1.lattice.angles, s1.lattice.angles]
-    lst_lattice_number = [s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc,
-                          s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc, s1.lattice.abc,
-                          s1.lattice.abc, s1.lattice.abc]
+    lst_formula = [s1.formula, s2.formula, s3.formula, s4.formula, s5.formula, s6.formula, s7.formula, s8.formula,
+                   s9.formula, s10.formula, s11.formula, s12.formula]
+    lst_n_fraction = [s1.composition.get_atomic_fraction("N"), s2.composition.get_atomic_fraction("N"),
+                      s3.composition.get_atomic_fraction("N"), s4.composition.get_atomic_fraction("N"),
+                      s5.composition.get_atomic_fraction("N"), s6.composition.get_atomic_fraction("N"),
+                      s7.composition.get_atomic_fraction("N"), s8.composition.get_atomic_fraction("N"),
+                      s9.composition.get_atomic_fraction("N"), s10.composition.get_atomic_fraction("N"),
+                      s11.composition.get_atomic_fraction("N"), s12.composition.get_atomic_fraction("N")]
+    lst_volume = [s1.volume, s2.volume, s3.volume, s4.volume, s5.volume, s6.volume, s7.volume, s8.volume, s9.volume,
+                  s10.volume, s11.volume, s12.volume]
+    lst_lattice_angles = [s1.lattice.angles, s2.lattice.angles, s3.lattice.angles, s4.lattice.angles,
+                          s5.lattice.angles, s6.lattice.angles, s7.lattice.angles, s8.lattice.angles,
+                          s9.lattice.angles, s10.lattice.angles, s11.lattice.angles, s12.lattice.angles]
+    lst_lattice_number = [s1.lattice.abc, s2.lattice.abc, s3.lattice.abc, s4.lattice.abc, s5.lattice.abc,
+                          s6.lattice.abc, s7.lattice.abc, s8.lattice.abc, s9.lattice.abc, s10.lattice.abc,
+                          s11.lattice.abc, s12.lattice.abc]
     lst_total_energy = [-737.67773557, -737.67773612, -737.47148272, -737.85826126, -735.90418046, -736.19720729,
                         -735.74980860, -736.01665789, -1466.09809181, -1466.09764283, -1466.44056007, -1465.77935593]
     dic_data = {"Index": lst_index, "Formula": lst_formula, "N+ Fraction": lst_n_fraction, "Volume": lst_volume,
