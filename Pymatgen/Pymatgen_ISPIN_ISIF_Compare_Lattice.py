@@ -50,10 +50,10 @@ def main():
     lst_lattice_number = [s1.lattice.abc, s2.lattice.abc, s3.lattice.abc, s4.lattice.abc, s5.lattice.abc,
                           s6.lattice.abc, s7.lattice.abc, s8.lattice.abc, s9.lattice.abc, s10.lattice.abc,
                           s11.lattice.abc, s12.lattice.abc]
-    lst_total_energy = [-737.67773557, -737.67773612, -737.47148272, -737.85826126, -735.90418046, -736.19720729,
-                        -735.74980860, -736.01665789, -1466.09809181, -1466.09764283, -1466.44056007, -1465.77935593]
+    lst_1_energy = [-737.67773557, -737.67773612, -737.47148272, -737.85826126, -735.90418046, -736.19720729,
+                    -735.74980860, -736.01665789, -1466.09809181, -1466.09764283, -1466.44056007, -1465.77935593]
     dic_data = {"Index": lst_index, "Formula": lst_formula, "N+ Fraction": lst_n_fraction, "Volume": lst_volume,
-                "Lattice Angles": lst_lattice_angles, "Lattice Number": lst_lattice_number, "Energy": lst_total_energy}
+                "Lattice Angles": lst_lattice_angles, "Lattice Number": lst_lattice_number, "Energy": lst_1_energy}
     output = pd.DataFrame(dic_data)
     output.to_csv("data.csv", index=False, encoding='utf8')
 
