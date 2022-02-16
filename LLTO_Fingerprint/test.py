@@ -24,7 +24,7 @@ if __name__ == '__main__':
         distance_list.append([Structure.get_distance(structure_from_cif, o_index, la_index) for o_index in o_index_list])
 
     for la_index in la_index_list:
-        plt.scatter(np.array([la_index]*len(distance_list[la_index])), distance_list[la_index])
+        plt.scatter(np.array([la_index]*len(distance_list[la_index])), distance_list[la_index-1])
     plt.show()
 
     neighbor = structure_from_cif.get_all_neighbors(r=3)
