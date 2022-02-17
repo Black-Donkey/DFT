@@ -3,6 +3,8 @@ from prettytable import PrettyTable
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy import where
+from sklearn.cluster import KMeans
 
 if __name__ == '__main__':
     coordinates = []
@@ -24,16 +26,27 @@ if __name__ == '__main__':
         distance_list.append(
             [Structure.get_distance(structure_from_cif, o_index, la_index) for o_index in o_index_list])
 
-    for plot_index in range(0, len(la_index_list)):
-        plt.scatter(np.array([plot_index] * len(distance_list[plot_index])), distance_list[plot_index])
-    plt.show()
+    cluster_la = []
 
-    neighbor = structure_from_cif.get_all_neighbors(r=3)
-    # ax = plt.subplot(111, projection='3d')  # 创建一个三维的绘图工程
-    #
-    # ax.scatter(x[:10], y[:10], z[:10], c='y')  # 绘制数据点
-    #
-    # ax.set_zlabel('Z')  # 坐标轴
-    # ax.set_ylabel('Y')
-    # ax.set_xlabel('X')
+    for plot_index in range(0, len(la_index_list)):
+        # plt.scatter(np.array([plot_index] * len(distance_list[plot_index])), distance_list[plot_index])
+        cluster_la.append(np.array([plot_index / 1000] * len(distance_list[plot_index])).tolist())
     # plt.show()
+
+    # Cluster the neighbor atoms
+    cluster_number = 8
+    cluster_distance = sum(distance_list, [])
+    cluster_la = sum(cluster_la, [])
+    data = np.transpose(np.array([cluster_la, cluster_distance]))
+    cluster_model = KMeans(n_clusters=cluster_number).fit(data)
+    labels = cluster_model.labels_
+    center = cluster_model.cluster_centers_
+
+    plt.scatter(data[:, 0], data[:, 1], c=labels)
+    plt.scatter(center[:, 0], center[:, 1], c='red')
+    plt.show()
+    neighbor_class = np.argmin(center[:, 1])
+    index_neighbor = [i for i, x in enumerate(labels) if x == neighbor_class]
+    average_distance = max([cluster_distance[i] for i in index_neighbor])
+
+    # neighbor = structure_from_cif.get_all_neighbors(r=3)
