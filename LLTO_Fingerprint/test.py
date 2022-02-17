@@ -47,6 +47,8 @@ if __name__ == '__main__':
     plt.show()
     neighbor_class = np.argmin(center[:, 1])
     index_neighbor = [i for i, x in enumerate(labels) if x == neighbor_class]
-    average_distance = max([cluster_distance[i] for i in index_neighbor])
+    radius_la = max([cluster_distance[i] for i in index_neighbor])
 
-    # neighbor = structure_from_cif.get_all_neighbors(r=3)
+    neighbor = structure_from_cif.get_all_neighbors(r=radius_la)
+    if "O" in neighbor[0][0]:
+        print("a")
