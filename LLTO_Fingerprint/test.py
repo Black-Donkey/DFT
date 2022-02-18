@@ -1,21 +1,33 @@
 from pymatgen.core import Structure
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 
-def cluster_model(ndarray_data, int_cluster_number):
-    model = KMeans(n_clusters=int_cluster_number).fit(ndarray_data)
+def calculate_radius(other_element_index_list, int_cluster_number):
+    # Generate training data
+    distance_list = []
+    for other_element_index in other_element_index_list:
+        distance_list.append(
+            [Structure.get_distance(structure_from_cif, o_index, other_element_index) for o_index in o_index_list])
+    cluster_la = []
+    for plot_index in range(0, len(other_element_index_list)):
+        cluster_la.append(np.array([plot_index / 1e6] * len(distance_list[plot_index])).tolist())
+    cluster_distance = sum(distance_list, [])
+    cluster_la = sum(cluster_la, [])
+    data = np.transpose(np.array([cluster_la, cluster_distance]))
+    # Train kNN model
+    model = KMeans(n_clusters=int_cluster_number).fit(data)
     labels = model.labels_
     center = model.cluster_centers_
-
     plt.scatter(data[:, 0], data[:, 1], c=labels)
     plt.scatter(center[:, 0], center[:, 1], c='red')
     plt.show()
+    # Find the neighbor atoms and radius
     neighbor_class = np.argmin(center[:, 1])
-    list_index_neighbor = [i for i, x in enumerate(labels) if x == neighbor_class]
-    return list_index_neighbor
+    index_neighbor = [i for i, x in enumerate(labels) if x == neighbor_class]
+    radius = max([cluster_distance[i] for i in index_neighbor])
+    return radius
 
 
 if __name__ == '__main__':
@@ -31,24 +43,27 @@ if __name__ == '__main__':
     la_index_list = np.where(np.array(species) == 57)[0].tolist()
     ti_index_list = np.where(np.array(species) == 22)[0].tolist()
 
-    distance_list = []
-    for la_index in la_index_list:
-        distance_list.append(
-            [Structure.get_distance(structure_from_cif, o_index, la_index) for o_index in o_index_list])
-
-    cluster_la = []
-    for plot_index in range(0, len(la_index_list)):
-        # plt.scatter(np.array([plot_index] * len(distance_list[plot_index])), distance_list[plot_index])
-        cluster_la.append(np.array([plot_index / 1000] * len(distance_list[plot_index])).tolist())
-    # plt.show()
-
     # Cluster the neighbor atoms
-    cluster_number = 8
-    cluster_distance = sum(distance_list, [])
-    cluster_la = sum(cluster_la, [])
-    data = np.transpose(np.array([cluster_la, cluster_distance]))
-    index_neighbor = cluster_model(data, cluster_number)
-    radius_la = max([cluster_distance[i] for i in index_neighbor])
-    neighbor = structure_from_cif.get_all_neighbors(r=radius_la)
-    if "O" in neighbor[0][0]:
-        print("a")
+    radius_la = calculate_radius(la_index_list, 8)
+    radius_li = calculate_radius(li_index_list, 15)
+    neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
+    neighbor_radius_li = structure_from_cif.get_all_neighbors(r=radius_li)
+
+    la_class = []
+    for a in range(0, len(neighbor_radius_la)):
+        la_count = 0
+        for b in range(0, len(neighbor_radius_la[a])):
+            if neighbor_radius_la[a][b].species_string == "La":
+                la_count += 1
+        la_class.append(la_count)
+
+    li_class = []
+    for a in range(0, len(neighbor_radius_li)):
+        li_count = 0
+        for b in range(0, len(neighbor_radius_li[a])):
+            if neighbor_radius_li[a][b].species_string == "Li":
+                li_count += 1
+        li_class.append(li_count)
+
+    li_class = [i * 10 for i in li_class]
+    class_list = np.sum([la_class, li_class], axis=0).tolist()
