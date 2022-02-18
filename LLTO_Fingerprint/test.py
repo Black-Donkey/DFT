@@ -1,4 +1,5 @@
 from pymatgen.core import Structure
+from pymatgen.io import cif, vasp
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -67,3 +68,8 @@ if __name__ == '__main__':
 
     li_class = [i * 10 for i in li_class]
     class_list = np.sum([la_class, li_class], axis=0).tolist()
+
+    structure_from_cif.remove_sites(indices=[0, 10, 50])
+    structure_from_cif.append(species="N")
+
+    cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
