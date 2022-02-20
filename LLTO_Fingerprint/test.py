@@ -67,9 +67,9 @@ if __name__ == '__main__':
         li_class.append(li_count)
 
     li_class = [i * 10 for i in li_class]
-    class_list = np.sum([la_class, li_class], axis=0).tolist()
+    fingerprint_list = np.sum([la_class, li_class], axis=0).tolist()
+    unique_fingerprint_list = list(set(fingerprint_list))
 
-    structure_from_cif.remove_sites(indices=[0, 10, 50])
-    structure_from_cif.append(species="N")
+    # structure_from_cif.replace()
 
     cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
