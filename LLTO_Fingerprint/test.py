@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 
-def calculate_radius(other_element_index_list, int_cluster_number):
+def calculate_radius(list_neighbor_element_index, int_cluster_number):
     # Generate training data
     distance_list = []
-    for other_element_index in other_element_index_list:
+    for other_element_index in list_neighbor_element_index:
         distance_list.append(
             [Structure.get_distance(structure_from_cif, o_index, other_element_index) for o_index in o_index_list])
     cluster_la = []
-    for plot_index in range(0, len(other_element_index_list)):
+    for plot_index in range(0, len(list_neighbor_element_index)):
         cluster_la.append(np.array([plot_index / 1e6] * len(distance_list[plot_index])).tolist())
     cluster_distance = sum(distance_list, [])
     cluster_la = sum(cluster_la, [])
@@ -32,12 +32,9 @@ def calculate_radius(other_element_index_list, int_cluster_number):
 
 
 if __name__ == '__main__':
-    coordinates = []
     species = []
-    neighbor = []
     structure_from_cif = Structure.from_file("U2_N0_OV0_1.cif")
     for s in structure_from_cif:
-        coordinates.append(s.frac_coords.tolist())
         species.append(s.specie.Z)
     o_index_list = np.where(np.array(species) == 8)[0].tolist()
     li_index_list = np.where(np.array(species) == 3)[0].tolist()
@@ -49,6 +46,8 @@ if __name__ == '__main__':
     radius_li = calculate_radius(li_index_list, 15)
     neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
     neighbor_radius_li = structure_from_cif.get_all_neighbors(r=radius_li)
+    del neighbor_radius_la[0:o_index_list[0]]
+    del neighbor_radius_li[0:o_index_list[0]]
 
     la_class = []
     for a in range(0, len(neighbor_radius_la)):
@@ -65,14 +64,17 @@ if __name__ == '__main__':
             if neighbor_radius_li[a][b].species_string == "Li":
                 li_count += 1
         li_class.append(li_count)
-
     li_class = [i * 10 for i in li_class]
     fingerprint_list = np.sum([la_class, li_class], axis=0).tolist()
+
     unique_fingerprint_list = list(set(fingerprint_list))
+
+    cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
 
     # structure_from_cif.replace()
     for i in range(0, len(unique_fingerprint_list)):
-        substitute_index = fingerprint_list.index(unique_fingerprint_list[i])+60
+        file_index = "file" + str(i) + ".cif"
+        substitute_index = fingerprint_list.index(unique_fingerprint_list[i])+o_index_list[0]
         structure_from_cif.replace(i=substitute_index, species="N")
-        cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
+        cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
