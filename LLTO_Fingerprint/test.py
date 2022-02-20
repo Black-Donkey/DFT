@@ -71,5 +71,8 @@ if __name__ == '__main__':
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
-
-    cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
+    for i in range(0, len(unique_fingerprint_list)):
+        substitute_index = fingerprint_list.index(unique_fingerprint_list[i])+60
+        structure_from_cif.replace(i=substitute_index, species="N")
+        cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
+        structure_from_cif.replace(i=substitute_index, species="O")
