@@ -41,14 +41,17 @@ if __name__ == '__main__':
     la_index_list = np.where(np.array(species) == 57)[0].tolist()
     ti_index_list = np.where(np.array(species) == 22)[0].tolist()
 
-    # Cluster the neighbor atoms
+    # Calculate radius for neighbor elements
     radius_la = calculate_radius(la_index_list, 8)
     radius_li = calculate_radius(li_index_list, 15)
+
+    # Calculate distances for all neighbor elements
     neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
     neighbor_radius_li = structure_from_cif.get_all_neighbors(r=radius_li)
     del neighbor_radius_la[0:o_index_list[0]]
     del neighbor_radius_li[0:o_index_list[0]]
 
+    # Count neighbor elements
     la_class = []
     for a in range(0, len(neighbor_radius_la)):
         la_count = 0
@@ -56,7 +59,6 @@ if __name__ == '__main__':
             if neighbor_radius_la[a][b].species_string == "La":
                 la_count += 1
         la_class.append(la_count)
-
     li_class = []
     for a in range(0, len(neighbor_radius_li)):
         li_count = 0
@@ -65,11 +67,10 @@ if __name__ == '__main__':
                 li_count += 1
         li_class.append(li_count)
     li_class = [i * 10 for i in li_class]
+
+    # Generate ID (fingerprint) for each oxygen
     fingerprint_list = np.sum([la_class, li_class], axis=0).tolist()
-
     unique_fingerprint_list = list(set(fingerprint_list))
-
-    cif.CifWriter(structure_from_cif).write_file(filename="file.cif")
 
     # structure_from_cif.replace()
     for i in range(0, len(unique_fingerprint_list)):
