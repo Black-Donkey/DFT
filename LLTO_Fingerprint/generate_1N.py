@@ -1,22 +1,22 @@
 from pymatgen.core import Structure
-from pymatgen.io import cif, vasp
+from pymatgen.io import cif
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
 
-def calculate_radius(list_neighbor_element_index, int_cluster_number):
+def calculate_radius(structure, list_o_index, list_neighbor_index, int_cluster_number):
     # Generate training data
     distance_list = []
-    for other_element_index in list_neighbor_element_index:
-        distance_list.append(
-            [Structure.get_distance(structure_from_cif, o_index, other_element_index) for o_index in o_index_list])
-    cluster_la = []
-    for plot_index in range(0, len(list_neighbor_element_index)):
-        cluster_la.append(np.array([plot_index / 1e6] * len(distance_list[plot_index])).tolist())
+    for neighbor_index in list_neighbor_index:
+        distance_list.append([Structure.get_distance(structure, o_index, neighbor_index) for o_index in list_o_index])
+    cluster = []
+    for plot_index in range(0, len(list_neighbor_index)):
+        cluster.append(np.array([plot_index / 1e6] * len(distance_list[plot_index])).tolist())
     cluster_distance = sum(distance_list, [])
-    cluster_la = sum(cluster_la, [])
-    data = np.transpose(np.array([cluster_la, cluster_distance]))
+    cluster = sum(cluster, [])
+    data = np.transpose(np.array([cluster, cluster_distance]))
+
     # Train kNN model
     model = KMeans(n_clusters=int_cluster_number).fit(data)
     labels = model.labels_
@@ -24,6 +24,7 @@ def calculate_radius(list_neighbor_element_index, int_cluster_number):
     plt.scatter(data[:, 0], data[:, 1], c=labels)
     plt.scatter(center[:, 0], center[:, 1], c='red')
     plt.show()
+
     # Find the neighbor atoms and radius
     neighbor_class = np.argmin(center[:, 1])
     index_neighbor = [i for i, x in enumerate(labels) if x == neighbor_class]
@@ -31,19 +32,18 @@ def calculate_radius(list_neighbor_element_index, int_cluster_number):
     return radius
 
 
-if __name__ == '__main__':
-    species = []
-    structure_from_cif = Structure.from_file("U2_N0_OV0_1.cif")
-    for s in structure_from_cif:
-        species.append(s.specie.Z)
+def main():
+    path = "U2_N0_OV0_1.cif"
+    structure_from_cif = Structure.from_file(path)
+    species = [s.specie.Z for s in structure_from_cif]
     o_index_list = np.where(np.array(species) == 8)[0].tolist()
     li_index_list = np.where(np.array(species) == 3)[0].tolist()
     la_index_list = np.where(np.array(species) == 57)[0].tolist()
     ti_index_list = np.where(np.array(species) == 22)[0].tolist()
 
     # Calculate radius for neighbor elements
-    radius_la = calculate_radius(la_index_list, 8)
-    radius_li = calculate_radius(li_index_list, 15)
+    radius_la = calculate_radius(structure_from_cif, o_index_list, la_index_list, 8)
+    radius_li = calculate_radius(structure_from_cif, o_index_list, li_index_list, 15)
 
     # Calculate distances for all neighbor elements
     neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
@@ -69,13 +69,17 @@ if __name__ == '__main__':
     li_class = [i * 10 for i in li_class]
 
     # Generate ID (fingerprint) for each oxygen
-    fingerprint_list = np.sum([la_class, li_class], axis=0).tolist()
+    fingerprint_list = list(np.sum([la_class, li_class], axis=0))
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
     for i in range(0, len(unique_fingerprint_list)):
-        file_index = "file" + str(i) + ".cif"
-        substitute_index = fingerprint_list.index(unique_fingerprint_list[i])+o_index_list[0]
+        file_index = "U2_N1_OV0_" + str(i) + ".cif"
+        substitute_index = fingerprint_list.index(unique_fingerprint_list[i]) + o_index_list[0]
         structure_from_cif.replace(i=substitute_index, species="N")
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
+
+
+if __name__ == '__main__':
+    main()
