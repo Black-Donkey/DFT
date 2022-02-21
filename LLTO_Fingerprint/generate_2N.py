@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # Calculate radius for neighbor elements
     radius_la = calculate_radius(structure_from_cif, o_index_list, la_index_list, 8)
     radius_li = calculate_radius(structure_from_cif, o_index_list, li_index_list, 15)
-    radius_n = calculate_radius(structure_from_cif, o_index_list, n_index_list, 8)
+    radius_n = calculate_radius(structure_from_cif, o_index_list, n_index_list, 10)
 
     # Calculate distances for all neighbor elements
     neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
