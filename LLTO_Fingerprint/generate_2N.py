@@ -32,24 +32,28 @@ def calculate_radius(structure, list_o_index, list_neighbor_index, int_cluster_n
     return radius
 
 
-def main():
-    path = "U2_N0_OV0"
+if __name__ == '__main__':
+    path = "U2_N0_OV0_0"
     structure_from_cif = Structure.from_file(path + ".cif")
     species = [s.specie.Z for s in structure_from_cif]
-    o_index_list = np.where(np.array(species) == 8)[0].tolist()
     li_index_list = np.where(np.array(species) == 3)[0].tolist()
     la_index_list = np.where(np.array(species) == 57)[0].tolist()
     ti_index_list = np.where(np.array(species) == 22)[0].tolist()
+    n_index_list = np.where(np.array(species) == 7)[0].tolist()
+    o_index_list = np.where(np.array(species) == 8)[0].tolist()
 
     # Calculate radius for neighbor elements
     radius_la = calculate_radius(structure_from_cif, o_index_list, la_index_list, 8)
     radius_li = calculate_radius(structure_from_cif, o_index_list, li_index_list, 15)
+    radius_n = calculate_radius(structure_from_cif, o_index_list, n_index_list, 8)
 
     # Calculate distances for all neighbor elements
     neighbor_radius_la = structure_from_cif.get_all_neighbors(r=radius_la)
     neighbor_radius_li = structure_from_cif.get_all_neighbors(r=radius_li)
+    neighbor_radius_n = structure_from_cif.get_all_neighbors(r=radius_n)
     del neighbor_radius_la[0:o_index_list[0]]
     del neighbor_radius_li[0:o_index_list[0]]
+    del neighbor_radius_n[0:o_index_list[0]]
 
     # Count neighbor elements
     la_class = []
@@ -67,9 +71,17 @@ def main():
                 li_count += 1
         li_class.append(li_count)
     li_class = [i * 10 for i in li_class]
+    n_class = []
+    for a in range(0, len(neighbor_radius_n)):
+        n_count = 0
+        for b in range(0, len(neighbor_radius_n[a])):
+            if neighbor_radius_n[a][b].species_string == "N":
+                n_count += 1
+        n_class.append(n_count)
+    n_class = [i * 100 for i in n_class]
 
     # Generate ID (fingerprint) for each oxygen
-    fingerprint_list = list(np.sum([la_class, li_class], axis=0))
+    fingerprint_list = list(np.sum([la_class, li_class, n_class], axis=0))
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
@@ -79,7 +91,3 @@ def main():
         structure_from_cif.replace(i=substitute_index, species="N")
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
-
-
-if __name__ == '__main__':
-    main()
