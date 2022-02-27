@@ -32,7 +32,7 @@ def calculate_radius(structure, list_o_index, list_neighbor_index, int_cluster_n
     return radius
 
 
-if __name__ == '__main__':
+def main():
     path = "U2_N0_OV0_0"
     structure_from_cif = Structure.from_file(path + ".cif")
     species = [s.specie.Z for s in structure_from_cif]
@@ -91,3 +91,9 @@ if __name__ == '__main__':
         structure_from_cif.replace(i=substitute_index, species="N")
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
+
+    print(unique_fingerprint_list)
+
+
+if __name__ == '__main__':
+    main()
