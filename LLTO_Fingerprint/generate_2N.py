@@ -33,7 +33,7 @@ def calculate_radius(structure, list_o_index, list_neighbor_index, int_cluster_n
 
 
 def main():
-    path = "U2_N0_OV0_0"
+    path = "U2_N0_OV0_2"
     structure_from_cif = Structure.from_file(path + ".cif")
     species = [s.specie.Z for s in structure_from_cif]
     li_index_list = np.where(np.array(species) == 3)[0].tolist()
