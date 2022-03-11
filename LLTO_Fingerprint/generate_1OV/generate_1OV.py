@@ -81,8 +81,8 @@ def main():
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
         structure_from_cif_ov = Structure.from_file(file_index)
-        structure_from_cif_ov.remove_species(species="Al")
-        cif.CifWriter(structure_from_cif).write_file(filename=file_index)
+        structure_from_cif_ov.remove_species(species=["Al"])
+        cif.CifWriter(structure_from_cif_ov).write_file(filename=file_index)
 
     print(unique_fingerprint_list)
 
