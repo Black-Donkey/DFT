@@ -102,7 +102,6 @@ def main():
     # Button Browse
     root.btn01 = Button(root, font=("Arial", 11), text="Browse", command=lambda: browse(root))
     root.btn01.place(x=630, y=60, width=85, height=30)
-    # root.pathlabel = Label(root)
 
     # Button Check-this
     root.btn02 = Button(root, font=("Arial", 11), text="Check-this", command=lambda: check_this(root))
