@@ -82,7 +82,7 @@ def main():
         structure_from_cif.replace(i=substitute_index, species="O")
 
     for item in set(fingerprint_list):
-        print("fingerprint %d has found %d" %(item, fingerprint_list.count(item)))
+        print("fingerprint %d has found %d" % (item, fingerprint_list.count(item)))
 
 
 if __name__ == '__main__':
