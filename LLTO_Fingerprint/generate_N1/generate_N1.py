@@ -81,7 +81,8 @@ def main():
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
 
-    print(unique_fingerprint_list)
+    for item in set(fingerprint_list):
+        print("fingerprint %d has found %d" %(item, fingerprint_list.count(item)))
 
 
 if __name__ == '__main__':

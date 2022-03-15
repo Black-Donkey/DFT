@@ -96,7 +96,8 @@ def main():
         structure_from_cif_ov.remove_species(species=["Al"])
         cif.CifWriter(structure_from_cif_ov).write_file(filename=file_index)
 
-    print(unique_fingerprint_list)
+    for item in set(fingerprint_list):
+        print("fingerprint %d has found %d" % (item, fingerprint_list.count(item)))
 
 
 if __name__ == '__main__':
