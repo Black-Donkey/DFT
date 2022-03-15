@@ -3,7 +3,7 @@ from matplotlib.ticker import MaxNLocator
 import pandas as pd
 
 
-path1 = "S:\\projects\\11_LLTO_2U_1N\\data_energy.csv"
+path1 = "S:\\projects\\11_LLTO_U2_N1_OV0\\data_energy.csv"
 csv_energy = pd.read_csv(path1, header=None)
 list_energy = sum(csv_energy.values.tolist(), [])
 
