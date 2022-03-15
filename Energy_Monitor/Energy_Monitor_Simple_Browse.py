@@ -8,7 +8,7 @@ import paramiko
 
 
 # function getting the line index of the total charge string existing last time
-def save_energy(str_path, str_keyword, str_csv_file_name):
+def save_energy(str_path, str_csv_file_name):
     str_path_vaspout = str_path + "\\vaspout"
     int_line_idx = 0
     int_energy_line_idx = 0
@@ -18,13 +18,26 @@ def save_energy(str_path, str_keyword, str_csv_file_name):
     with open(str_path_vaspout, 'r') as file:
         for line in file.readlines():
             int_line_idx = int_line_idx + 1
-            if str_keyword in line.strip():
+            if "F=" in line.strip():
                 int_energy_line_idx = int_energy_line_idx + 1
-                msg = "'%s' string found in ionic step %d" % (str_keyword, int_energy_line_idx)
+                msg = "'F=' string found in ionic step %d" % int_energy_line_idx
                 print(msg)
                 lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
                 lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
                 lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+    # str_path_outcar = str_path + "\\OUTCAR"
+    # lst_cput = []
+    # int_line_idx = 0
+    # int_time_line_idx = 0
+    # with open(str_path_outcar, 'r') as file:
+    #     for line in file.readlines():
+    #         int_line_idx = int_line_idx + 1
+    #         if "LOOP+" in line.strip():
+    #             int_time_line_idx = int_time_line_idx + 1
+    #             msg = "'LOOP+' string found in ionic step %d" % int_time_line_idx
+    #             print(msg)
+    #             lst_cput.append(float(linecache.getline(str_path_outcar, int_line_idx).split()[3].replace(":", "")))
+    # dic_data = {'f': lst_f, 'e0': lst_e0, 'de': lst_de, 'cput': lst_cput}
     dic_data = {'f': lst_f, 'e0': lst_e0, 'de': lst_de}
     output = pd.DataFrame(dic_data)
     output.to_csv(str_csv_file_name, index=False, encoding='utf8')
@@ -41,10 +54,9 @@ def browse(self):
 def generate_canvas(self):
     str_path = self.entry01.get()
     print("get" + self.entry01.get())
-    str_keyword = "F="
     str_csv_file_name = "../FE0dEdata.csv"
     # Save the total free energy into csv
-    save_energy(str_path, str_keyword, str_csv_file_name)
+    save_energy(str_path, str_csv_file_name)
     # Load the total free energy and plot
     lst_f = pd.read_csv(str_csv_file_name, usecols=["f"])
     int_ionic_steps = len(lst_f)
@@ -102,7 +114,6 @@ def main():
     # Button Browse
     root.btn01 = Button(root, font=("Arial", 11), text="Browse", command=lambda: browse(root))
     root.btn01.place(x=630, y=60, width=85, height=30)
-    # root.pathlabel = Label(root)
 
     # Button Check-this
     root.btn02 = Button(root, font=("Arial", 11), text="Check-this", command=lambda: check_this(root))
