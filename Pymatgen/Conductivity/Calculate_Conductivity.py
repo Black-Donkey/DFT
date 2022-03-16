@@ -20,9 +20,10 @@ analyzer_1500 = DiffusionAnalyzer.from_files(c, specie="Li", smoothed=False)
 
 diffusivities = [analyzer_500.diffusivity, analyzer_1000.diffusivity, analyzer_1500.diffusivity]
 
-plt = get_arrhenius_plot(temperatures, diffusivities)
-plt.savefig("Li_Arrhenius_Plot.png")
+fig = get_arrhenius_plot(temperatures, diffusivities)
+fig.savefig("Li_Arrhenius_Plot.png")
+fig.show()
 rts = get_extrapolated_conductivity(temperatures, diffusivities,
                                     new_temp=300, structure=analyzer_500.structure,
                                     species="Li")
-print("The Li ionic conductivity for anti-spinel Li3OBr at 300 K is %.4f mS/cm" % rts)
+print("The Li ionic conductivity for anti-spinel LLTO at 300 K is %.4f mS/cm" % rts)
