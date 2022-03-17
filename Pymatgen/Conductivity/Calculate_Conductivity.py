@@ -4,8 +4,8 @@ import collections
 from pymatgen.core import Structure
 from pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzer, \
     get_arrhenius_plot, get_extrapolated_conductivity
-from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
-from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
+# from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
+# from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
 temperatures = [500, 1000, 1500]
 
