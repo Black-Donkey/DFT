@@ -7,7 +7,7 @@ from pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzer, \
 # from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 # from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
-temperatures = [300, 900]
+temperatures = [300, 300]
 
 
 a = ["S:/projects/09_DFT_MD_test/LLTO_2U_1N_3/vasprun.xml"]
@@ -24,6 +24,6 @@ fig = get_arrhenius_plot(temperatures, diffusivities)
 fig.savefig("Li_Arrhenius_Plot.png")
 fig.show()
 rts = get_extrapolated_conductivity(temperatures, diffusivities,
-                                    new_temp=1200, structure=analyzer_300.structure,
+                                    new_temp=500, structure=analyzer_300.structure,
                                     species="Li")
-print("The Li ionic conductivity for anti-spinel LLTO at 300 K is %.4f mS/cm" % rts)
+print("The Li ionic conductivity for LLTO at 500 K is %.4f mS/cm" % rts)
