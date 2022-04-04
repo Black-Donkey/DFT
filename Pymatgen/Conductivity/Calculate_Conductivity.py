@@ -10,12 +10,14 @@ from pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzer, \
 temperatures = [300, 300]
 
 
-a = ["S:/projects/09_DFT_MD_test/LLTO_2U_1N_3/vasprun.xml"]
-b = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0/vasprun.xml"]
+path_300K = ["S:/projects/09_DFT_MD_test/LLTO_2U_1N_3/vasprun.xml"]
 
-analyzer_300 = DiffusionAnalyzer.from_files(a, specie="Li", smoothed=False)
+
+analyzer_300 = DiffusionAnalyzer.from_files(path_300K, specie="Li", smoothed=False)
 diffusivities = [analyzer_300.diffusivity, analyzer_300.diffusivity]
 
+plt = analyzer_300.get_msd_plot()
+plt.show()
 # analyzer_900 = DiffusionAnalyzer.from_files(b, specie="Li", smoothed=False)
 
 # diffusivities = [analyzer_300.diffusivity, analyzer_900.diffusivity]
