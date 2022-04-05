@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-# import json
 import collections
 from pymatgen.core import Structure
 from pymatgen.analysis.diffusion.analyzer import DiffusionAnalyzer, get_arrhenius_plot, get_extrapolated_conductivity
@@ -30,5 +29,5 @@ print("The Li ionic conductivity for LLTO at 500 K is %.4f mS/cm" % rts)
 
 structure = analyzer_1300.structure
 trajectories = [s.frac_coords for s in analyzer_1300.get_drift_corrected_structures()]
-pda = ProbabilityDensityAnalysis(structure, trajectories, species="Li")
+pda = ProbabilityDensityAnalysis(structure, trajectories, species=["Li"])
 pda.to_chgcar("CHGCAR.vasp")
