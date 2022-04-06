@@ -33,7 +33,7 @@ def calculate_radius(structure, list_o_index, list_neighbor_index, int_cluster_n
 
 
 def main():
-    input_path = "U2_N2_OV0.cif"
+    input_path = "U2_N3_OV0.cif"
     structure_from_cif = Structure.from_file(input_path)
     species = [s.specie.Z for s in structure_from_cif]
     li_index_list = np.where(np.array(species) == 3)[0].tolist()
@@ -85,7 +85,7 @@ def main():
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
-    output_path = "U2_N2_OV0"
+    output_path = "U2_N4_OV0"
     for i in range(0, len(unique_fingerprint_list)):
         file_index = output_path + "_" + str(i) + ".cif"
         substitute_index = fingerprint_list.index(unique_fingerprint_list[i]) + o_index_list[0]

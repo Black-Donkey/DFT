@@ -85,7 +85,7 @@ def main():
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
-    output_path = "U2_N2_OV0"
+    output_path = "U2_N3_OV0"
     for i in range(0, len(unique_fingerprint_list)):
         file_index = output_path + "_" + str(i) + ".cif"
         substitute_index = fingerprint_list.index(unique_fingerprint_list[i]) + o_index_list[0]
