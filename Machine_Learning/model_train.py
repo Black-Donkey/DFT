@@ -1,14 +1,13 @@
-import sklearn.datasets as datasets
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.decomposition import PCA
-import pydotplus
-from six import StringIO
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
 from sklearn.tree import export_graphviz
+from six import StringIO
 import matplotlib.pyplot as plt
+import pandas as pd
+import pydotplus
 import os
 
 # Run this to add the path to the graphviz package
@@ -31,8 +30,7 @@ def main():
     # Create the model
     regressor = RandomForestRegressor()
 
-    pipe = Pipeline([('scaler', StandardScaler()), ('reduce_dim', PCA()),
-                     ('regressor', regressor)])
+    pipe = Pipeline([('scaler', StandardScaler()), ('reduce_dim', PCA()), ('regressor', regressor)])
     pipe.fit(X_train, y_train)
     ypipe = pipe.predict(X_test)
 
