@@ -9,9 +9,9 @@ import pydotplus
 from six import StringIO
 from sklearn.tree import export_graphviz
 import matplotlib.pyplot as plt
-# Run this to add the path to the graphviz package
 import os
 
+# Run this to add the path to the graphviz package
 os.environ['PATH'] = os.environ['PATH'] + ';' + r"C:\Program Files\Graphviz\bin"
 
 
@@ -42,32 +42,32 @@ def main():
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
     graph.write_png('tree.png')
 
-    importances = list(regressor.feature_importances_)
+    importance = list(regressor.feature_importances_)
     # List of tuples with variable and importance
-    print(importances)
+    print(importance)
 
     # Saving feature names for later use
     feature_list = list(data.columns)[1:-1]
 
-    feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(feature_list, importances)]
-    # Sort the feature importances by most important first
-    feature_importances = sorted(feature_importances, key=lambda x: x[1], reverse=True)
-    # Print out the feature and importances
-    # [print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importances];
+    feature_importance = [(feature, round(importance, 2)) for feature, importance in zip(feature_list, importance)]
+    # Sort the feature importance by most important first
+    feature_importance = sorted(feature_importance, key=lambda x: x[1], reverse=True)
+    # Print out the feature and importance
+    [print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importance]
 
     # Set the style
-    # plt.style.use('fivethirtyeight')
+    plt.style.use('bmh')
     # list of x locations for plotting
-    x_values = list(range(len(importances)))
+    x_values = list(range(len(importance)))
     print(x_values)
     # Make a bar chart
-    plt.bar(x_values, importances, orientation='vertical')
+    plt.bar(x_values, importance, orientation='vertical')
     # Tick labels for x axis
     plt.xticks(x_values, feature_list, rotation=6)
     # Axis labels and title
     plt.ylabel('Importance')
     plt.xlabel('Variable')
-    plt.title('Variable Importances')
+    plt.title('Variable Importance')
     plt.show()
 
 
