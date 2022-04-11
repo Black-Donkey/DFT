@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import math
 
 kb = 8.62e-5
 T = 773
@@ -11,7 +10,9 @@ U2_N2_OV0_path = "S:/projects/13_LLTO_U2_N2_OV0/data_energy.csv"
 U2_N3_OV0_path = "S:/projects/15_LLTO_U2_N3_OV0/data_energy.csv"
 
 # LLTO_U2_N1_OV0
-
+U2_N0_OV0_count = [1]
+U2_N0_OV0_energy = sum(pd.read_csv(U2_N0_OV0_path, header=None, nrows=len(U2_N0_OV0_count)).values.tolist(), [])
+print(U2_N0_OV0_energy[0])
 
 # LLTO_U2_N1_OV0
 U2_N1_OV0_count = [2, 38, 12, 18, 4, 4, 20, 2, 6, 2]
