@@ -85,15 +85,15 @@ def main():
     unique_fingerprint_list = list(set(fingerprint_list))
 
     # structure_from_cif.replace()
-    output_path = "U2_N1_OV1"
+    output_path = "U2_N1_OV0_1"
     for i in range(0, len(unique_fingerprint_list)):
         file_index = output_path + "_" + str(i) + ".cif"
         substitute_index = fingerprint_list.index(unique_fingerprint_list[i]) + o_index_list[0]
-        structure_from_cif.replace(i=substitute_index, species="Al")
+        structure_from_cif.replace(i=substitute_index, species="C")
         cif.CifWriter(structure_from_cif).write_file(filename=file_index)
         structure_from_cif.replace(i=substitute_index, species="O")
         structure_from_cif_ov = Structure.from_file(file_index)
-        structure_from_cif_ov.remove_species(species=["Al"])
+        structure_from_cif_ov.remove_species(species=["C"])
         cif.CifWriter(structure_from_cif_ov).write_file(filename=file_index)
 
     for item in set(fingerprint_list):
