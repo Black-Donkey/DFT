@@ -31,7 +31,7 @@ y = data.iloc[:, -1].values
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
 
 # Create the model
-regressor = RandomForestRegressor()
+regressor = RandomForestRegressor(random_state=0)
 
 pipe = Pipeline([('scaler', StandardScaler()), ('reduce_dim', PCA()), ('regressor', regressor)])
 pipe.fit(x_train, y_train)
