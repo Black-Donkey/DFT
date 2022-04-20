@@ -9,7 +9,7 @@ from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 temperatures = [300, 1300]
 
 path_300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_300K/vasprun.xml"]
-path_1300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1300K/vasprun.xml"]
+path_1300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1300K/XDATCAR"]
 
 analyzer_300 = DiffusionAnalyzer.from_files(path_300K, specie="Li", smoothed=False)
 analyzer_1300 = DiffusionAnalyzer.from_files(path_1300K, specie="Li", smoothed=False)
