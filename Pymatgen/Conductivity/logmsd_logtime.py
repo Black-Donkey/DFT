@@ -9,7 +9,8 @@ from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 
 
 path_1300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vasprun.xml",
-              "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run2/vasprun.xml"]
+              "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run2/vasprun.xml",
+              "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run3/vasprun.xml"]
 
 analyzer_1500 = DiffusionAnalyzer.from_files(path_1300K, specie="Li", smoothed=False)
 
@@ -18,6 +19,14 @@ time = analyzer_1500.dt[1:]
 
 msdlog = np.log(msd)
 timelog = np.log(time)
+
+# create plot with labels
+plt.plot(time, msd)
+plt.scatter(time, msd)
+plt.xlabel('time')
+plt.ylabel('MSD')
+plt.show()
+
 
 # create log-log plot with labels
 plt.plot(timelog, msdlog)
