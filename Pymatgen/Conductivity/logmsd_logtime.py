@@ -14,7 +14,7 @@ path_U2_N0_OV0_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vas
 
 path_U1_N0_OV1_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U1_N0_OV1_1500K/run1/vasprun.xml"]
 
-analyzer_1500 = DiffusionAnalyzer.from_files(path_U1_N0_OV1_1500K, specie="Li", smoothed=False)
+analyzer_1500 = DiffusionAnalyzer.from_files(path_U2_N0_OV0_1500K, specie="Li", smoothed=False)
 
 msd = analyzer_1500.msd[1:]
 time = analyzer_1500.dt[1:]
@@ -36,7 +36,7 @@ plt.xlabel('Log(time)')
 plt.ylabel('Log(MSD)')
 plt.show()
 
-structure = analyzer_1500[1500].structure
-trajectories = [s.frac_coords for s in analyzer_1500[1500].get_drift_corrected_structures()]
+structure = analyzer_1500.structure
+trajectories = [s.frac_coords for s in analyzer_1500.get_drift_corrected_structures()]
 pda = ProbabilityDensityAnalysis(structure, trajectories, species="Li")
 pda.to_chgcar("CHGCAR.vasp")  # Output to a CHGCAR-like file for visualization in VESTA.
