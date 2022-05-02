@@ -8,9 +8,9 @@ from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 # from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
 
-path_1300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vasprun.xml",
-              "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run2/vasprun.xml",
-              "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run3/vasprun.xml"]
+path_U2_N0_OV0_1300K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vasprun.xml",
+                        "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run2/vasprun.xml",
+                        "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run3/vasprun.xml"]
 
 path_U1_N0_OV1_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U1_N0_OV1_1500K/run1/vasprun.xml"]
 
@@ -28,7 +28,6 @@ plt.scatter(time, msd)
 plt.xlabel('time')
 plt.ylabel('MSD')
 plt.show()
-
 
 # create log-log plot with labels
 plt.plot(timelog, msdlog)
