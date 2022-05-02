@@ -14,7 +14,7 @@ path_U2_N0_OV0_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vas
 
 path_U1_N0_OV1_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U1_N0_OV1_1500K/run1/vasprun.xml"]
 
-analyzer_1500 = DiffusionAnalyzer.from_files(path_U2_N0_OV0_1500K, specie="Li", smoothed=False)
+analyzer_1500 = DiffusionAnalyzer.from_files(path_U1_N0_OV1_1500K, specie="Li", smoothed=False)
 
 msd = analyzer_1500.msd[1:]
 time = analyzer_1500.dt[1:]
