@@ -7,17 +7,13 @@ from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 
 # from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
-
-path_U2_N0_OV0_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run1/vasprun.xml",
-                        "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run2/vasprun.xml",
-                        "S:/projects/25_LLTO_U2_MD/LLTO_U2_N0_OV0_1500K/run3/vasprun.xml"]
-
 path_U1_N0_OV1_1500K = ["S:/projects/25_LLTO_U2_MD/LLTO_U1_N0_OV1_1500K/run1/vasprun.xml"]
+path_U1_N0_OV1_2000K = ["S:/projects/56_AIMD/LLTO_U1_N0_OV1_1/run1/vasprun.xml"]
 
-analyzer_1500 = DiffusionAnalyzer.from_files(path_U1_N0_OV1_1500K, specie="Li", smoothed=False)
+analyzer_2000 = DiffusionAnalyzer.from_files(path_U1_N0_OV1_1500K, specie="Li", smoothed=False)
 
-msd = analyzer_1500.msd[1:]
-time = analyzer_1500.dt[1:]
+msd = analyzer_2000.msd[1:]
+time = analyzer_2000.dt[1:]
 
 msdlog = np.log(msd)
 timelog = np.log(time)
@@ -36,7 +32,7 @@ plt.xlabel('Log(time)')
 plt.ylabel('Log(MSD)')
 plt.show()
 
-structure = analyzer_1500.structure
-trajectories = [s.frac_coords for s in analyzer_1500.get_drift_corrected_structures()]
-pda = ProbabilityDensityAnalysis(structure, trajectories, species="Li")
+structure = analyzer_2000.structure
+trajectories = [s.frac_coords for s in analyzer_2000.get_drift_corrected_structures()]
+pda = ProbabilityDensityAnalysis(structure, trajectories, species=["Li"])
 pda.to_chgcar("CHGCAR.vasp")  # Output to a CHGCAR-like file for visualization in VESTA.
