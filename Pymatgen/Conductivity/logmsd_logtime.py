@@ -6,7 +6,7 @@ from pymatgen.analysis.diffusion.analyzer import DiffusionAnalyzer, get_arrheniu
 from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 from pymatgen.core.trajectory import Trajectory
 from pymatgen.io.vasp.outputs import Xdatcar
-from pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzer
+
 
 # from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
