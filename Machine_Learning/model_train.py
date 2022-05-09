@@ -3,6 +3,7 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error
@@ -75,19 +76,30 @@ RF_mse = mean_squared_error(y_test, y_pred_RF)
 print("RF r2 score is ", RF_r2score)
 print("RF mse is ", RF_mse)
 
-kf = KFold(n_splits=10)
-kf.get_n_splits(X)
-KFold(n_splits=10, random_state=None, shuffle=True)
-for train_index, test_index in kf.split(X):
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = y[train_index], y[test_index]
-    # creating an object of LinearRegression class
-    LR = LinearRegression()
-    # fitting the training data
-    LR.fit(X_train, y_train)
-    y_pred_MLR = LR.predict(X_test)
-    # predicting the accuracy score
-    MLR_r2score = r2_score(y_test, y_pred_MLR)
-    MLR_mse = mean_squared_error(y_test, y_pred_MLR)
-    print("MLR r2 score is ", MLR_r2score)
-    print("MLR mse is ", MLR_mse)
+# kf = KFold(n_splits=10)
+# kf.get_n_splits(X)
+# KFold(n_splits=10, random_state=None, shuffle=True)
+# for train_index, test_index in kf.split(X):
+# X_train, X_test = X[train_index], X[test_index]
+# y_train, y_test = y[train_index], y[test_index]
+# creating an object of LinearRegression class
+
+LR = LinearRegression()
+# fitting the training data
+LR.fit(x_train, y_train)
+y_pred_MLR = LR.predict(x_test)
+# predicting the accuracy score
+MLR_r2score = r2_score(y_test, y_pred_MLR)
+MLR_mse = mean_squared_error(y_test, y_pred_MLR)
+print("MLR r2 score is ", MLR_r2score)
+print("MLR mse is ", MLR_mse)
+
+# SVM model
+clf = SVR(kernel='rbf')
+clf.fit(x_train, y_train)
+y_pred_SVM = clf.predict(x_test)
+
+SVM_r2score = r2_score(y_test, y_pred_SVM)
+SVM_mse = mean_squared_error(y_test, y_pred_SVM)
+print("SVM r2 score is ", SVM_r2score)
+print("SVM mse is ", SVM_mse)
