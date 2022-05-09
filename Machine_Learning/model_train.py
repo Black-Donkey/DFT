@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
@@ -103,3 +104,8 @@ SVM_r2score = r2_score(y_test, y_pred_SVM)
 SVM_mse = mean_squared_error(y_test, y_pred_SVM)
 print("SVM r2 score is ", SVM_r2score)
 print("SVM mse is ", SVM_mse)
+
+x = pd.DataFrame(X)
+vif = [variance_inflation_factor(x.values, x.columns.get_loc(i)) for i in x.columns]
+rDf = x.corr()
+print('pairwise correlation matrix：', rDf)
