@@ -7,7 +7,6 @@ from pymatgen.analysis.diffusion.aimd.pathway import ProbabilityDensityAnalysis
 from pymatgen.core.trajectory import Trajectory
 from pymatgen.io.vasp.outputs import Xdatcar
 
-
 # from pymatgen.analysis.diffusion.aimd.van_hove import VanHoveAnalysis
 
 vasprun_U1_N0_OV1_2000K = ["S:/projects/56_AIMD/LLTO_U1_N0_OV1_1/run1/vasprun.xml"]
