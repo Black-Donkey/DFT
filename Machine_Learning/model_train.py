@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression
@@ -69,19 +70,24 @@ plt.xlabel('Variable')
 plt.title('Variable Importance')
 plt.show()
 
-# creating an object of LinearRegression class
-LR = LinearRegression()
-# fitting the training data
-LR.fit(x_train, y_train)
-y_pred_MLR = LR.predict(x_test)
-
-# predicting the accuracy score
 RF_r2score = r2_score(y_test, y_pred_RF)
-MLR_r2score = r2_score(y_test, y_pred_MLR)
 RF_mse = mean_squared_error(y_test, y_pred_RF)
-MLR_mse = mean_squared_error(y_test, y_pred_MLR)
-
 print("RF r2 score is ", RF_r2score)
-print("MLR r2 score is ", MLR_r2score)
 print("RF mse is ", RF_mse)
-print("MLR mse is ", MLR_mse)
+
+kf = KFold(n_splits=10)
+kf.get_n_splits(X)
+KFold(n_splits=10, random_state=None, shuffle=True)
+for train_index, test_index in kf.split(X):
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    # creating an object of LinearRegression class
+    LR = LinearRegression()
+    # fitting the training data
+    LR.fit(X_train, y_train)
+    y_pred_MLR = LR.predict(X_test)
+    # predicting the accuracy score
+    MLR_r2score = r2_score(y_test, y_pred_MLR)
+    MLR_mse = mean_squared_error(y_test, y_pred_MLR)
+    print("MLR r2 score is ", MLR_r2score)
+    print("MLR mse is ", MLR_mse)
