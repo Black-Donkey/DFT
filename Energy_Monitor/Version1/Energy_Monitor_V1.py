@@ -3,6 +3,7 @@ from tkinter import filedialog
 import linecache
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import paramiko
 import os
@@ -25,7 +26,6 @@ def save_energy(str_path, str_csv_file_name):
             int_energy_line_idx = 0
             str_RUN = "RUN" + str(i + 1)
             str_path_vaspout = str_path + "\\" + str_RUN + "\\vaspout"
-            print(str_path_vaspout)
             with open(str_path_vaspout, 'r') as file:
                 for line in file.readlines():
                     int_line_idx = int_line_idx + 1
@@ -72,8 +72,13 @@ def generate_canvas(self):
     # Save the total free energy into csv
     save_energy(str_path, str_csv_file_name)
     # Load the total free energy and plot
-    lst_f = pd.read_csv(str_csv_file_name, usecols=["f"])
+    lst_f = pd.read_csv(str_csv_file_name, usecols=["f"]).values.flatten().tolist()
     int_ionic_steps = len(lst_f)
+
+    lst_run = pd.read_csv(str_csv_file_name, usecols=["run"]).values.flatten().tolist()
+    colors = list(map(lambda x: uc.color(tuple(x)), uc.ncolors((max(lst_run)))))
+    cmap = matplotlib.colors.ListedColormap(colors)
+    print(colors)
 
     fig = plt.figure(figsize=(6, 3.8))
     fig.add_subplot().plot(range(1, int_ionic_steps + 1), lst_f)
