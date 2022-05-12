@@ -5,26 +5,49 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import paramiko
+import os
 
 
 # function getting the line index of the total charge string existing last time
 def save_energy(str_path, str_csv_file_name):
     str_path_vaspout = str_path + "\\vaspout"
-    int_line_idx = 0
-    int_energy_line_idx = 0
+
     lst_f = []
     lst_e0 = []
     lst_de = []
-    with open(str_path_vaspout, 'r') as file:
-        for line in file.readlines():
-            int_line_idx = int_line_idx + 1
-            if "F=" in line.strip():
-                int_energy_line_idx = int_energy_line_idx + 1
-                msg = "'F=' string found in ionic step %d" % int_energy_line_idx
-                print(msg)
-                lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
-                lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
-                lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+    lst_RUN = [i[0] for i in os.walk(str_path) if i[0].split("\\")[-1].startswith("RUN")]
+
+    if len(lst_RUN) > 0:
+        for i in range(0, len(lst_RUN)):
+            int_line_idx = 0
+            int_energy_line_idx = 0
+            str_RUN = "RUN" + str(i + 1)
+            str_path_vaspout = str_path + "\\" + str_RUN + "\\vaspout"
+            print(str_path_vaspout)
+            with open(str_path_vaspout, 'r') as file:
+                for line in file.readlines():
+                    int_line_idx = int_line_idx + 1
+                    if "F=" in line.strip():
+                        int_energy_line_idx = int_energy_line_idx + 1
+                        msg = "'F=' string found in ionic step %d" % int_energy_line_idx
+                        print(msg)
+                        lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
+                        lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
+                        lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+    else:
+        int_line_idx = 0
+        int_energy_line_idx = 0
+        with open(str_path_vaspout, 'r') as file:
+            for line in file.readlines():
+                int_line_idx = int_line_idx + 1
+                if "F=" in line.strip():
+                    int_energy_line_idx = int_energy_line_idx + 1
+                    msg = "'F=' string found in ionic step %d" % int_energy_line_idx
+                    print(msg)
+                    lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
+                    lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
+                    lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+
     dic_data = {'f': lst_f, 'e0': lst_e0, 'de': lst_de}
     output = pd.DataFrame(dic_data)
     output.to_csv(str_csv_file_name, index=False, encoding='utf8')
