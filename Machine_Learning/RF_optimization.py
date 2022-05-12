@@ -19,10 +19,10 @@ X = data.iloc[:, 1:-1].values
 y = data.iloc[:, -1].values
 
 # Split the data into training and testing sets
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=587)
 
 # Create the model
-regressor = RandomForestRegressor(random_state=0)
+regressor = RandomForestRegressor(random_state=587)
 
 # Number of trees in random forest
 n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
@@ -52,8 +52,8 @@ rf = RandomForestRegressor()
 
 # Random search of parameters, using 3-fold cross validation,
 # search across 100 different combinations, and use all available cores
-rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=100, cv=3, verbose=2,
-                               random_state=42, n_jobs=-1)
+rf_random = RandomizedSearchCV(estimator=rf, param_distributions=random_grid, n_iter=2000, cv=3, verbose=2,
+                               random_state=587, n_jobs=-1)
 # Fit the random search model
 rf_random.fit(x_train, y_train)
 

@@ -12,10 +12,15 @@ from sklearn.metrics import r2_score
 from sklearn.tree import export_graphviz
 from six import StringIO
 import matplotlib.pyplot as plt
+import xgboost as xgb
 import pandas as pd
 import numpy as np
 import pydotplus
 import os
+
+'''
+    This file is the python script to train regression models.
+'''
 
 # Run this to add the path to the graphviz package
 os.environ['PATH'] = os.environ['PATH'] + ';' + r"C:\Program Files\Graphviz\bin"
@@ -30,12 +35,20 @@ print(data.head())
 X = data.iloc[:, 1:-1].values
 y = data.iloc[:, -1].values
 
+x = pd.DataFrame(X)
+vif = [variance_inflation_factor(x.values, x.columns.get_loc(i)) for i in x.columns]
+rDf = x.corr()
+
 # Split the data into training and testing sets
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=587)
+
+'''
+    Random Forest model
+'''
 
 # Create the model
-regressor = RandomForestRegressor(n_estimators=800, min_samples_split=10, min_samples_leaf=2,
-                                  max_features='auto', max_depth=None, bootstrap=False, random_state=0)
+regressor = RandomForestRegressor(n_estimators=200, min_samples_split=2, min_samples_leaf=1,
+                                  max_features='auto', max_depth=100, bootstrap=True, random_state=587)
 
 pipe = Pipeline([('scaler', StandardScaler()), ('reduce_dim', PCA()), ('regressor', regressor)])
 pipe.fit(x_train, y_train)
@@ -51,12 +64,6 @@ importance = list(regressor.feature_importances_)
 
 # Saving feature names for later use
 feature_list = list(data.columns)[1:-1]
-
-feature_importance = [(feature, round(importance, 2)) for feature, importance in zip(feature_list, importance)]
-# Sort the feature importance by most important first
-feature_importance = sorted(feature_importance, key=lambda x: x[1], reverse=True)
-# Print out the feature and importance
-[print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importance]
 
 # Set the style
 plt.style.use('bmh')
@@ -85,6 +92,10 @@ print("RF mse is ", RF_mse)
 # y_train, y_test = y[train_index], y[test_index]
 # creating an object of LinearRegression class
 
+'''
+    Multi-Linear Regression model
+'''
+
 LR = LinearRegression()
 # fitting the training data
 LR.fit(x_train, y_train)
@@ -95,7 +106,10 @@ MLR_mse = mean_squared_error(y_test, y_pred_MLR)
 print("MLR r2 score is ", MLR_r2score)
 print("MLR mse is ", MLR_mse)
 
-# SVM model
+'''
+    Support Vector Machine (SVM) model
+'''
+
 clf = SVR(kernel='rbf')
 clf.fit(x_train, y_train)
 y_pred_SVM = clf.predict(x_test)
@@ -105,7 +119,7 @@ SVM_mse = mean_squared_error(y_test, y_pred_SVM)
 print("SVM r2 score is ", SVM_r2score)
 print("SVM mse is ", SVM_mse)
 
-x = pd.DataFrame(X)
-vif = [variance_inflation_factor(x.values, x.columns.get_loc(i)) for i in x.columns]
-rDf = x.corr()
-print('pairwise correlation matrix：', rDf)
+'''
+    XGBoost model
+'''
+
