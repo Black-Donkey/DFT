@@ -13,6 +13,7 @@ from sklearn.tree import export_graphviz
 from six import StringIO
 import matplotlib.pyplot as plt
 import xgboost as xgb
+from sklearn.model_selection import cross_val_score
 import pandas as pd
 import numpy as np
 import pydotplus
@@ -122,4 +123,10 @@ print("SVM mse is ", SVM_mse)
 '''
     XGBoost model
 '''
-
+xgb_model = xgb.XGBRegressor(objective="reg:squarederror", random_state=587)
+xgb_model.fit(x_train, y_train)
+y_pred_XGB = xgb_model.predict(x_test)
+XGB_r2score = r2_score(y_test, y_pred_XGB)
+XGB_mse = mean_squared_error(y_test, y_pred_XGB)
+print("XGB r2 score is ", XGB_r2score)
+print("XGB mse is ", XGB_mse)
