@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import paramiko
 import os
+import utils_color as uc
 
 
 # function getting the line index of the total charge string existing last time
@@ -15,6 +16,7 @@ def save_energy(str_path, str_csv_file_name):
     lst_f = []
     lst_e0 = []
     lst_de = []
+    lst_run = []
     lst_RUN = [i[0] for i in os.walk(str_path) if i[0].split("\\")[-1].startswith("RUN")]
 
     if len(lst_RUN) > 0:
@@ -34,6 +36,7 @@ def save_energy(str_path, str_csv_file_name):
                         lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
                         lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
                         lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+                        lst_run.append(i + 1)
     else:
         int_line_idx = 0
         int_energy_line_idx = 0
@@ -47,8 +50,9 @@ def save_energy(str_path, str_csv_file_name):
                     lst_f.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[2].replace("=", "")))
                     lst_e0.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[4].replace("=", "")))
                     lst_de.append(float(linecache.getline(str_path_vaspout, int_line_idx).split()[7].replace("=", "")))
+                    lst_run.append(len(lst_RUN) + 1)
 
-    dic_data = {'f': lst_f, 'e0': lst_e0, 'de': lst_de}
+    dic_data = {'f': lst_f, 'e0': lst_e0, 'de': lst_de, 'run': lst_run}
     output = pd.DataFrame(dic_data)
     output.to_csv(str_csv_file_name, index=False, encoding='utf8')
 
@@ -64,7 +68,7 @@ def browse(self):
 def generate_canvas(self):
     str_path = self.entry01.get()
     print("get" + self.entry01.get())
-    str_csv_file_name = "../FE0dEdata.csv"
+    str_csv_file_name = "./FE0dEdata.csv"
     # Save the total free energy into csv
     save_energy(str_path, str_csv_file_name)
     # Load the total free energy and plot
