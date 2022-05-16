@@ -124,7 +124,8 @@ print("SVM mse is ", SVM_mse)
 '''
     XGBoost model
 '''
-xgb_model = xgb.XGBRegressor(objective="reg:squarederror", random_state=587)
+xgb_model = xgb.XGBRegressor(objective="reg:squarederror", max_depth=100, learning_rate=0.05, n_estimators=200,
+                             random_state=587)
 xgb_model.fit(X_train, y_train)
 y_pred_XGB = xgb_model.predict(X_test)
 XGB_r2score = r2_score(y_test, y_pred_XGB)
@@ -135,7 +136,8 @@ print("XGB mse is ", XGB_mse)
 '''
     Shapley values
 '''
-explainer = shap.TreeExplainer(pipe.named_steps['regressor'].estimators_[0])
-shap_values = explainer.shap_values(X_test)
-shap_values2 = explainer(X_test)
-shap.force_plot(explainer.expected_value, shap_values[0, :], x.iloc[0, :])
+cols = list(data.columns)[1:-1]
+explainer = shap.TreeExplainer(xgb_model)
+shap_values = explainer.shap_values(data[cols])
+shap.summary_plot(shap_values, data[cols])
+shap.summary_plot(shap_values, data[cols], plot_type="bar")
