@@ -17,6 +17,7 @@ from sklearn.model_selection import cross_val_score
 import pandas as pd
 import numpy as np
 import pydotplus
+import shap
 import os
 
 '''
@@ -41,7 +42,7 @@ vif = [variance_inflation_factor(x.values, x.columns.get_loc(i)) for i in x.colu
 rDf = x.corr()
 
 # Split the data into training and testing sets
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=587)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=587)
 
 '''
     Random Forest model
@@ -52,8 +53,8 @@ regressor = RandomForestRegressor(n_estimators=200, min_samples_split=2, min_sam
                                   max_features='auto', max_depth=100, bootstrap=True, random_state=587)
 
 pipe = Pipeline([('scaler', StandardScaler()), ('reduce_dim', PCA()), ('regressor', regressor)])
-pipe.fit(x_train, y_train)
-y_pred_RF = pipe.predict(x_test)
+pipe.fit(X_train, y_train)
+y_pred_RF = pipe.predict(X_test)
 
 dot_data = StringIO()
 export_graphviz(pipe.named_steps['regressor'].estimators_[0], out_file=dot_data)
@@ -68,13 +69,13 @@ feature_list = list(data.columns)[1:-1]
 
 # Set the style
 plt.style.use('bmh')
-# list of x locations for plotting
-x_values = list(range(len(importance)))
+# list of X locations for plotting
+X_values = list(range(len(importance)))
 # Make a bar chart
-plt.bar(x_values, importance, orientation='vertical')
-# Tick labels for x axis
-plt.xticks(x_values, feature_list, rotation=6)
-# Axis labels and title
+plt.bar(X_values, importance, orientation='vertical')
+# Tick labels for X aXis
+plt.xticks(X_values, feature_list, rotation=6)
+# AXis labels and title
 plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importance')
@@ -88,9 +89,9 @@ print("RF mse is ", RF_mse)
 # kf = KFold(n_splits=10)
 # kf.get_n_splits(X)
 # KFold(n_splits=10, random_state=None, shuffle=True)
-# for train_index, test_index in kf.split(X):
-# X_train, X_test = X[train_index], X[test_index]
-# y_train, y_test = y[train_index], y[test_index]
+# for train_indeX, test_indeX in kf.split(X):
+# X_train, X_test = X[train_indeX], X[test_indeX]
+# y_train, y_test = y[train_indeX], y[test_indeX]
 # creating an object of LinearRegression class
 
 '''
@@ -99,8 +100,8 @@ print("RF mse is ", RF_mse)
 
 LR = LinearRegression()
 # fitting the training data
-LR.fit(x_train, y_train)
-y_pred_MLR = LR.predict(x_test)
+LR.fit(X_train, y_train)
+y_pred_MLR = LR.predict(X_test)
 # predicting the accuracy score
 MLR_r2score = r2_score(y_test, y_pred_MLR)
 MLR_mse = mean_squared_error(y_test, y_pred_MLR)
@@ -112,8 +113,8 @@ print("MLR mse is ", MLR_mse)
 '''
 
 clf = SVR(kernel='rbf')
-clf.fit(x_train, y_train)
-y_pred_SVM = clf.predict(x_test)
+clf.fit(X_train, y_train)
+y_pred_SVM = clf.predict(X_test)
 
 SVM_r2score = r2_score(y_test, y_pred_SVM)
 SVM_mse = mean_squared_error(y_test, y_pred_SVM)
@@ -124,9 +125,17 @@ print("SVM mse is ", SVM_mse)
     XGBoost model
 '''
 xgb_model = xgb.XGBRegressor(objective="reg:squarederror", random_state=587)
-xgb_model.fit(x_train, y_train)
-y_pred_XGB = xgb_model.predict(x_test)
+xgb_model.fit(X_train, y_train)
+y_pred_XGB = xgb_model.predict(X_test)
 XGB_r2score = r2_score(y_test, y_pred_XGB)
 XGB_mse = mean_squared_error(y_test, y_pred_XGB)
 print("XGB r2 score is ", XGB_r2score)
 print("XGB mse is ", XGB_mse)
+
+'''
+    Shapley values
+'''
+explainer = shap.TreeExplainer(pipe.named_steps['regressor'].estimators_[0])
+shap_values = explainer.shap_values(X_test)
+shap_values2 = explainer(X_test)
+shap.force_plot(explainer.expected_value, shap_values[0, :], x.iloc[0, :])
